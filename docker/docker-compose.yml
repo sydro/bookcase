@@ -1,0 +1,31 @@
+version: "2"
+
+networks:
+  bookcase-net:
+
+services:
+  database:
+    hostname: database
+    image: mongo
+    networks:
+      - bookcase-net
+    volumes:
+      - ./mongo/mongod.conf:/etc/mongod.conf
+      - ./mongo/start-mongo.sh:/opt/start-mongo.sh
+      - ./mongo/data:/data
+    command: /opt/start-mongo.sh
+
+  server:
+    hostname: server
+    image: node:latest
+    working_dir: /opt/app
+    env_file:
+      - .env
+    ports:
+      - "5000:5000"
+      - "3000:3000"
+    networks:
+      - bookcase-net
+    volumes:
+      - ../:/opt/app
+    command: tail -f /var/log/dmesg
