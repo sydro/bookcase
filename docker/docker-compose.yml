@@ -28,4 +28,4 @@ services:
       - bookcase-net
     volumes:
       - ../:/opt/app
-    command: tail -f /var/log/dmesg
+    command: npm run start && tail -f /var/log/dmesg
