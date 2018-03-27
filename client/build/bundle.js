@@ -36811,7 +36811,7 @@
 	          React.createElement(
 	            "p",
 	            { className: "footer-info" },
-	            "Created by Joe McIlhargey"
+	            "Spazio Sociale Zei - Corte dei Chiaramonte 2, Lecce"
 	          )
 	        )
 	      );
@@ -36893,7 +36893,7 @@
 	          React.createElement(
 	            "h1",
 	            null,
-	            "Find and trade great books"
+	            "Find and share great books"
 	          )
 	        ),
 	        React.createElement(
@@ -36906,7 +36906,7 @@
 	            React.createElement(
 	              "h2",
 	              null,
-	              "Add books and mark them available for trade"
+	              "Add books and mark them available for share"
 	            )
 	          ),
 	          React.createElement(
@@ -36916,7 +36916,7 @@
 	            React.createElement(
 	              "h2",
 	              null,
-	              "Search the library and propose a trade"
+	              "Search the library and propose a share"
 	            )
 	          ),
 	          React.createElement(

@@ -8,7 +8,7 @@ class Footer extends React.Component {
       <footer className="footer">
         <div className="footer-container">
           <span className="footer-social"></span>
-          <p className="footer-info">Created by Joe McIlhargey</p>
+          <p className="footer-info">Spazio Sociale Zei - Corte dei Chiaramonte 2, Lecce</p>
         </div>
       </footer>
     );

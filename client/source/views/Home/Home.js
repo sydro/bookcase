@@ -18,16 +18,16 @@ class Home extends React.Component {
     return (
       <div className="home-container">
         <div className={ imageClass }>
-          <h1>Find and trade great books</h1>
+          <h1>Find and share great books</h1>
         </div>
         <div className="home-section">
           <div className="home-detail">
             <i dangerouslySetInnerHTML={{ __html: book }} />
-            <h2>Add books and mark them available for trade</h2>
+            <h2>Add books and mark them available for share</h2>
           </div>
           <div className="home-detail">
             <i dangerouslySetInnerHTML={{ __html: search }} />
-            <h2>Search the library and propose a trade</h2>
+            <h2>Search the library and propose a share</h2>
           </div>
           <div className="home-detail">
             <i dangerouslySetInnerHTML={{ __html: share }} />
