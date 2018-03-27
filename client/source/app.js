@@ -13,19 +13,23 @@ import Search from "./views/Search/Search";
 import Library from "./views/Library/Library";
 import Settings from "./views/Settings/Settings";
 import Trade from "./views/Trade/Trade";
+import Barcode from "./views/Barcode/Barcode";
 import "style!./main.css";
 
 ReactDOM.render(
-    <Router history={ browserHistory }>
-        <Route path="/" component={ App } >
-          <IndexRoute component={ Home } />
-          <Route path="/browse" component={ Library } ></Route>
-          <Route path="/browse/:id" component={ Trade } ></Route>
-          <Route path="/register" component={ Register } ></Route>
-          <Route path="/login" component={ Login } ></Route>
-          <Route path="/search" component={ Search } ></Route>
-          <Route path="/settings" component={ Settings } ></Route>
-        </Route>
-        <Route path="*" component={ App } />
-    </Router>
-    , document.getElementById("app"));
+  <Router history={browserHistory}>
+    <Route path="/" component={App}>
+      <IndexRoute component={Home} />
+      <Route path="/browse" component={Library} />
+      <Route path="/browse/:id" component={Trade} />
+      <Route path="/register" component={Register} />
+      <Route path="/login" component={Login} />
+      <Route path="/search" component={Search} />
+      <Route path="/search/:isbn" component={Search} />
+      <Route path="/settings" component={Settings} />
+      <Route path="/barcode" component={Barcode} />
+    </Route>
+    <Route path="*" component={App} />
+  </Router>,
+  document.getElementById("app")
+);

@@ -12,7 +12,13 @@ body {
   letter-spacing: 0.05em;
 }
 
-h1, h2, h3, p, input, li, label {
+h1,
+h2,
+h3,
+p,
+input,
+li,
+label {
   font-weight: 300;
   letter-spacing: 0.04em;
 }
@@ -34,7 +40,10 @@ g {
   fill: #616161;
 }
 
-a, button, input[type="submit"], input[type="button"] {
+a,
+button,
+input[type="submit"],
+input[type="button"] {
   padding: 0.6em 1.5em;
   opacity: 0.85;
   cursor: pointer;
@@ -83,7 +92,6 @@ input[type="button"]:hover {
   justify-content: center;
   -webkit-justify-content: center;
   padding: 1.5em;
-
 }
 
 .header-home {
@@ -118,7 +126,7 @@ input[type="button"]:hover {
 }
 
 .header-text {
-  margin:0 0 0 1em;
+  margin: 0 0 0 1em;
   font-size: 0.9em;
 }
 
@@ -276,7 +284,7 @@ input[type="button"]:hover {
 }
 
 .data-label {
-    line-height: 100%;
+  line-height: 100%;
 }
 
 .search-results {
@@ -330,7 +338,6 @@ input[type="button"]:hover {
   align-items: center;
   -webkit-align-items: center;
 }
-
 
 .register-form {
   width: 15em;
@@ -474,7 +481,7 @@ input[type="button"]:hover {
   -webkit-flex-direction: column;
 }
 
-.user-datum  {
+.user-datum {
   display: flex;
   display: -webkit-flex;
   justify-content: flex-start;
@@ -670,4 +677,8 @@ input[type="button"]:hover {
 
 .trade-button:hover {
   opacity: 1;
+}
+
+#scanner-container video {
+  position: absolute;
 }
