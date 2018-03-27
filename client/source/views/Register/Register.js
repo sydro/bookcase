@@ -2,9 +2,9 @@
 
 import * as React from "react";
 import fetch from "isomorphic-fetch";
-import RegisterForm from "./components/registerform";
-import ErrorMessage from "./components/errormessage";
-import SuccessMessage from "./components/successmessage";
+import RegisterForm from "./components/RegisterForm";
+import ErrorMessage from "./components/ErrorMessage";
+import SuccessMessage from "./components/SuccessMessage";
 import { browserHistory } from "react-router";
 
 class Register extends React.Component {

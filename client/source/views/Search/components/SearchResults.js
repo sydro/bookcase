@@ -1,7 +1,7 @@
 "use strict";
 
 import * as React from "react";
-import BookDetail from "./bookdetail";
+import BookDetail from "./BookDetail";
 
 class SearchResults extends React.Component {
 

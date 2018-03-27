@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import fetch from "isomorphic-fetch";
-import Header from "./header/header";
-import Footer from "./footer/footer";
+import Header from "./Header/Header";
+import Footer from "./Footer/Footer";
 import { browserHistory } from "react-router";
 
 class App extends React.Component {

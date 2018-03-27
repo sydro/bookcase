@@ -2,10 +2,10 @@
 
 import * as React from "react";
 import fetch from "isomorphic-fetch";
-import SearchForm from "./components/searchform";
-import SearchResults from "./components/searchresults";
+import SearchForm from "./components/SearchForm";
+import SearchResults from "./components/SearchResults";
 import google from "../../images/google-dev.svg";
-import SuccessMessage from "./components/successmessage";
+import SuccessMessage from "./components/SuccessMessage";
 
 class Search extends React.Component {
 

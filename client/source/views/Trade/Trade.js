@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import { browserHistory } from "react-router";
-import BookTrade from "./components/booktrade";
-import TradeForm from "./components/tradeform";
+import BookTrade from "./components/BookTrade";
+import TradeForm from "./components/TradeForm";
 
 class Trade extends React.Component {
   constructor() {

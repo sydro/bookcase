@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import { browserHistory } from "react-router";
-import ErrorMessage from "./errormessage";
-import SuccessMessage from "./successmessage";
+import ErrorMessage from "./ErrorMessage";
+import SuccessMessage from "./SuccessMessage";
 
 class BookTrade extends React.Component {
   constructor(props) {

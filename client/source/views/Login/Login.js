@@ -3,9 +3,9 @@
 import * as React from "react";
 import fetch from "isomorphic-fetch";
 import { browserHistory } from "react-router";
-import LoginForm from "./components/loginform";
-import ErrorMessage from "./components/errormessage";
-import SuccessMessage from "./components/successmessage";
+import LoginForm from "./components/LoginForm";
+import ErrorMessage from "./components/ErrorMessage";
+import SuccessMessage from "./components/SuccessMessage";
 
 class Login extends React.Component {
   constructor() {

@@ -13,6 +13,7 @@ class HeaderButtons extends React.Component {
   }
   render() {
     const auth = this.props.auth;
+    console.log(auth);
     if (auth) {
       return (
         <div className="header-right">

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Link, browserHistory } from "react-router";
-import HeaderButtons from "./components/headerbuttons";
+import HeaderButtons from "./components/HeaderButtons";
 
 class Header extends React.Component {
   constructor(props) {
@@ -18,9 +18,9 @@ class Header extends React.Component {
         <div className={ `${ "header-container" } ${ this.props.path === "/" ? "header-home" : "header-route" }` }>
           <div className="header-left">
             <h1 className="header-title">
-              <Link to="/">Book Trader</Link>
+              <Link to="/">Zei Library</Link>
             </h1>
-            <h3 className="header-text">Trade, share, learn</h3>
+            <h3 className="header-text">Share knowledge!</h3>
           </div>
           <div className="header-middle">
             <Link className="header-button-middle" to="/browse">Browse Books</Link>

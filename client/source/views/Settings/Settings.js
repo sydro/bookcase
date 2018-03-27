@@ -2,11 +2,11 @@
 
 import * as React from "react";
 import fetch from "isomorphic-fetch";
-import EditButtons from "./components/editbuttons";
-import UserInfo from "./components/userinfo";
-import UserBooks from "./components/userbooks";
-import UserTrades from "./components/usertrades";
-import ErrorMessage from "./components/errormessage";
+import EditButtons from "./components/EditButtons";
+import UserInfo from "./components/UserInfo";
+import UserBooks from "./components/UserBooks";
+import UserTrades from "./components/UserTrades";
+import ErrorMessage from "./components/ErrorMessage";
 
 class Settings extends React.Component {
   constructor() {
