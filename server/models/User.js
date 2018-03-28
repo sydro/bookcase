@@ -41,55 +41,54 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
-  books: [{
-    title: String,
-    authors: String,
-    description: String,
-    isbn: String,
-    pages: String,
-    image: String,
-    owner: String,
-    available: { type: Boolean, default: true },
-    id: Schema.Types.ObjectId
-  }],
+  books: [
+    {
+      title: String,
+      authors: String,
+      description: String,
+      isbn: { type: String, unique: true },
+      pages: String,
+      image: String,
+      owner: String,
+      available: { type: Boolean, default: true },
+      id: Schema.Types.ObjectId
+    }
+  ],
   trades: { type: Array, default: [] },
   tokens: { type: Array, default: [] }
 });
 
-UserSchema.statics.authenticate = function (email, password, callback) {
-
-  User.findOne({ email: email })
-    .exec((error, user) => {
-      if (error) {
-        return callback(error);
-      }
-      if (!user) {
-        let error = new Error("User not found");
+UserSchema.statics.authenticate = function(email, password, callback) {
+  User.findOne({ email: email }).exec((error, user) => {
+    if (error) {
+      return callback(error);
+    }
+    if (!user) {
+      let error = new Error("User not found");
+      error.status = 401;
+      return callback(error);
+    }
+    bcrypt.compare(password, user.password, function(error, match) {
+      if (match) {
+        return callback(null, user);
+      } else if (error) {
+        return next(error);
+      } else {
+        let error = new Error("Credentials don't match");
         error.status = 401;
         return callback(error);
       }
-      bcrypt.compare(password, user.password, function (error, match) {
-        if (match) {
-          return callback(null, user);
-        } else if (error) {
-          return next(error);
-        } else {
-          let error = new Error("Credentials don't match");
-          error.status = 401;
-          return callback(error);
-        }
-      });
     });
+  });
 };
 
-UserSchema.pre("save", function (next) {
-
+UserSchema.pre("save", function(next) {
   const user = this;
   if (!user.isModified("password")) {
     return next();
   }
-  bcrypt.genSalt(10, function (error, salt) {
-    bcrypt.hash(user.password, salt, function (error, hash) {
+  bcrypt.genSalt(10, function(error, salt) {
+    bcrypt.hash(user.password, salt, function(error, hash) {
       if (error) {
         return next(error);
       }
