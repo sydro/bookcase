@@ -315,6 +315,9 @@ input[type="button"]:hover {
 
 .book-detail {
   flex: 0 0 20em;
+  background: aliceblue;
+  border: 1px solid;
+  padding: 10px;
 }
 
 .book-detail > button {

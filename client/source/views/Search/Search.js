@@ -14,6 +14,7 @@ class Search extends React.Component {
     this.state = { books: [], success: [] };
     this.handleBookRequest = this.handleBookRequest.bind(this);
     this.handleAddBook = this.handleAddBook.bind(this);
+    this.handleCloseDetails = this.handleCloseDetails.bind(this);
   }
   handleBookRequest(value) {
     if (!value.length) {
@@ -55,6 +56,9 @@ class Search extends React.Component {
         }
       });
   }
+  handleCloseDetails() {
+    this.setState({ success: [] });
+  }
   render() {
     let searchValue = "";
     if (typeof this.props.params.isbn != "undefined") {
@@ -73,6 +77,7 @@ class Search extends React.Component {
         <SearchResults
           books={this.state.books}
           onAddBook={this.handleAddBook}
+          onCloseDetails={this.handleCloseDetails}
         />
         <p className="data-label">
           Data provided by <span dangerouslySetInnerHTML={{ __html: google }} />{" "}

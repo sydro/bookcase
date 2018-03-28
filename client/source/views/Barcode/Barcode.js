@@ -9,7 +9,9 @@ class Barcode extends React.Component {
   handleFound(code) {
     browserHistory.push("/search/" + code);
   }
-
+  componentWillUnmount() {
+    Quagga.stop();
+  }
   componentDidMount() {
     let father = this;
     Quagga.init(
