@@ -46,7 +46,7 @@ const UserSchema = new Schema({
       title: String,
       authors: String,
       description: String,
-      isbn: { type: String, unique: true },
+      isbn: { type: String },
       pages: String,
       image: String,
       owner: String,

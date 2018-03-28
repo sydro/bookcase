@@ -6,17 +6,36 @@ const path = require("path");
 const routes = require("./routes");
 const mid = require("./middleware");
 const compression = require("compression");
+const User = require("./models/User");
 
 const app = express();
 const bodyParser = require("body-parser");
 
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGO_URI || "mongodb://localhost/test", (error, res) => {
+mongoose.connect(
+  process.env.MONGO_URI || "mongodb://localhost/test",
+  (error, res) => {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Connected to MongoDB");
+    }
+  }
+);
+
+let user = {
+  username: "admin",
+  email: "admin@email.it",
+  first: "",
+  last: "",
+  password: "Test!123"
+};
+
+User.create(user, (error, user) => {
   if (error) {
     console.log(error);
-  } else {
-    console.log("Connected to MongoDB");
   }
+  console.log("Success user admin created");
 });
 
 app.use(compression());
@@ -40,9 +59,9 @@ app.use((req, res, next) => {
 app.use((error, req, res, next) => {
   error.status = error.status || 500;
   res.send({ error: error.status, message: error.message });
-})
+});
 
-app.listen(process.env.PORT || 3000, (error) => {
+app.listen(process.env.PORT || 3000, error => {
   if (error) {
     console.log(error);
   } else {

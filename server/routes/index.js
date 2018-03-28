@@ -114,30 +114,18 @@ router.post("/library", mid.loggedIn, (req, res, next) => {
   } catch (error) {
     return next(error);
   }
-  User.findOneAndUpdate(
-    { _id: req.decoded.id },
-    { $push: { books: book } },
-    { new: true },
-    (error, user) => {
+  if (req.decoded.username == "admin") {
+    Book.create(book, (error, book) => {
       if (error) {
         return next(error);
       }
-      const entry = Object.assign(
-        {},
-        book,
-        { owner: user.username },
-        { available: true }
-      );
-      Book.create(entry, (error, book) => {
-        if (error) {
-          return next(error);
-        }
-        res
-          .status(200)
-          .send({ success: [book.title + " added to collection"] });
-      });
-    }
-  );
+      res.status(200).send({ success: [book.title + " added to collection"] });
+    });
+  } else {
+    let error = new Error("Error: no admin user!");
+    error.status = 403;
+    return next(error);
+  }
 });
 
 router.get("/settings", mid.loggedIn, (req, res, next) => {
