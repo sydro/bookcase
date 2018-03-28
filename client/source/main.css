@@ -681,4 +681,5 @@ input[type="button"]:hover {
 
 #scanner-container video {
   position: absolute;
+  z-index: -1;
 }
