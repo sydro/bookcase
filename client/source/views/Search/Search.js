@@ -7,11 +7,12 @@ import SearchForm from "./components/SearchForm";
 import SearchResults from "./components/SearchResults";
 import google from "../../images/google-dev.svg";
 import SuccessMessage from "./components/SuccessMessage";
+import ErrorMessage from "./components/ErrorMessage";
 
 class Search extends React.Component {
   constructor() {
     super();
-    this.state = { books: [], success: [] };
+    this.state = { books: [], success: [], errors: [] };
     this.handleBookRequest = this.handleBookRequest.bind(this);
     this.handleAddBook = this.handleAddBook.bind(this);
     this.handleCloseDetails = this.handleCloseDetails.bind(this);
@@ -50,14 +51,17 @@ class Search extends React.Component {
       .then(response => response.json())
       .then(json => {
         if (json.error) {
-          console.log(json);
+          let error =
+            json.error == "500" ? "Books exists in library!" : json.message;
+          this.setState({ success: [], errors: [error] });
         } else {
-          this.setState({ success: json.success });
+          this.setState({ success: json.success, errors: [] });
         }
+        console.log(this.state);
       });
   }
   handleCloseDetails() {
-    this.setState({ success: [] });
+    this.setState({ success: [], error: [] });
   }
   render() {
     let searchValue = "";
@@ -74,6 +78,7 @@ class Search extends React.Component {
           searchValue={searchValue}
         />
         <SuccessMessage success={this.state.success} />
+        <ErrorMessage errors={this.state.errors} />
         <SearchResults
           books={this.state.books}
           onAddBook={this.handleAddBook}
