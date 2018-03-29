@@ -16,7 +16,6 @@ class Library extends React.Component {
   }
   getAvailableBooks(page = 1) {
     this.setState({ page: page });
-    console.log("/api/library/" + page + "/" + this.paging.limit);
     fetch("/api/library/" + page + "/" + this.paging.limit, {
       method: "GET",
       headers: {

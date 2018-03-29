@@ -686,3 +686,8 @@ input[type="button"]:hover {
   position: absolute;
   z-index: -1;
 }
+
+.rc-pagination-prev a,
+.rc-pagination-next a {
+  padding: 0;
+}
