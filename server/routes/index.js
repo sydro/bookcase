@@ -70,12 +70,25 @@ router.get("/logout", mid.loggedIn, (req, res, next) => {
 });
 
 router.get("/library", (req, res, next) => {
+  Book.find({}).count((error, count) => {
+    if (error) {
+      return next(error);
+    }
+    res.status(200).send({ total: count });
+  });
+});
+
+router.get("/library/:page/:limit", (req, res, next) => {
+  const page = typeof req.params.page != "undefined" ? req.params.page : 1;
+  const limit = typeof req.params.limit != "undefined" ? req.params.limit : 10;
   Book.find({}, (error, books) => {
     if (error) {
       return next(error);
     }
     res.status(200).send(books);
-  });
+  })
+    .skip((page - 1) * limit)
+    .limit(limit * 1);
 });
 
 router.get("/book/:id", (req, res, next) => {
