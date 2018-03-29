@@ -16,19 +16,27 @@ class HeaderButtons extends React.Component {
     if (auth) {
       return (
         <div className="header-right">
-          <Link className="header-button-right" to="/settings">My Books</Link>
-          <button className="header-button-right" onClick={ this.onLogout }>Sign Out</button>
+          <Link className="header-button-right" to="/settings">
+            My Profile
+          </Link>
+          <button className="header-button-right" onClick={this.onLogout}>
+            Sign Out
+          </button>
         </div>
       );
     } else {
       return (
         <div className="header-right">
-          <Link className="header-button-right" to="/register">Sign Up</Link>
-          <Link className="header-button-right" to="/login">Sign In</Link>
+          <Link className="header-button-right" to="/register">
+            Sign Up
+          </Link>
+          <Link className="header-button-right" to="/login">
+            Sign In
+          </Link>
         </div>
       );
     }
   }
 }
 
-export default HeaderButtons
+export default HeaderButtons;

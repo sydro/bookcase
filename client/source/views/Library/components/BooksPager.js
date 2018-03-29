@@ -17,15 +17,23 @@ class Pager extends React.Component {
   }
 
   render() {
-    return (
-      <div>
-        <Pagination
-          onChange={this.handlePageChange}
-          current={this.state.current}
-          total={this.props.books}
-        />
-      </div>
-    );
+    if (this.props.books != 0) {
+      return (
+        <div>
+          <Pagination
+            onChange={this.handlePageChange}
+            current={this.state.current}
+            total={this.props.books}
+          />
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <p>No books!</p>
+        </div>
+      );
+    }
   }
 }
 

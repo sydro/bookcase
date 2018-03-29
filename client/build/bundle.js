@@ -36738,7 +36738,7 @@
 	          React.createElement(
 	            _reactRouter.Link,
 	            { className: "header-button-right", to: "/settings" },
-	            "My Books"
+	            "My Profile"
 	          ),
 	          React.createElement(
 	            "button",
@@ -38474,11 +38474,7 @@
 	          books: this.state.total,
 	          onChangePage: this.handleChangePage
 	        }),
-	        React.createElement(_ShowBooks2.default, { books: this.state.books }),
-	        React.createElement(_BooksPager2.default, {
-	          books: this.state.total,
-	          onChangePage: this.handleChangePage
-	        })
+	        React.createElement(_ShowBooks2.default, { books: this.state.books })
 	      );
 	    }
 	  }]);
@@ -38624,15 +38620,27 @@
 	  }, {
 	    key: "render",
 	    value: function render() {
-	      return React.createElement(
-	        "div",
-	        null,
-	        React.createElement(_rcPagination2.default, {
-	          onChange: this.handlePageChange,
-	          current: this.state.current,
-	          total: this.props.books
-	        })
-	      );
+	      if (this.props.books != 0) {
+	        return React.createElement(
+	          "div",
+	          null,
+	          React.createElement(_rcPagination2.default, {
+	            onChange: this.handlePageChange,
+	            current: this.state.current,
+	            total: this.props.books
+	          })
+	        );
+	      } else {
+	        return React.createElement(
+	          "div",
+	          null,
+	          React.createElement(
+	            "p",
+	            null,
+	            "No books!"
+	          )
+	        );
+	      }
 	    }
 	  }]);
 

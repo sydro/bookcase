@@ -62,10 +62,6 @@ class Library extends React.Component {
           onChangePage={this.handleChangePage}
         />
         <ShowBooks books={this.state.books} />
-        <BooksPager
-          books={this.state.total}
-          onChangePage={this.handleChangePage}
-        />
       </div>
     );
   }
