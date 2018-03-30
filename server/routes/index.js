@@ -250,6 +250,31 @@ router.put("/book", mid.loggedIn, (req, res, next) => {
   }
 });
 
+router.delete("/book",  (req, res, next) => {
+  let isbn = req.body.isbn;
+  if (isbn) {
+    Book.findOneAndRemove(
+      { isbn: isbn }
+    ).exec((error, book) => {
+        if (error) {
+          return next(error);
+        } else if (!book) {
+          let error = new Error("No matching book");
+          error.status = 404;
+          return next(error);
+        } else {
+          res.status(200).send({
+            success: "Book wih isbn: " + isbn + " removed!"
+          });
+        }
+      });
+  } else {
+    let error = new Error("Isbn is required");
+    error.status = 400;
+    return next(error);
+  }
+});
+
 router.put("/books", mid.loggedIn, (req, res, next) => {
   try {
     var books = JSON.parse(decodeURIComponent(req.body.books));

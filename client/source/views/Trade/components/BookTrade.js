@@ -16,6 +16,7 @@ class BookTrade extends React.Component {
     this.onDescChange = this.onDescChange.bind(this);
     this.onEdit = this.onEdit.bind(this);
     this.onSave = this.onSave.bind(this);
+    this.onDelete = this.onDelete.bind(this);
   }
 
   onTitleChange(event) {
@@ -42,6 +43,9 @@ class BookTrade extends React.Component {
   onSave(){
     this.props.onEditInfo();
     this.props.onSave();
+  }
+  onDelete(){
+    this.props.onDelete();
   }
   render() {
     const book = this.props.book;

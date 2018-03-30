@@ -62324,6 +62324,7 @@
 	    _this.componentWillMount = _this.componentWillMount.bind(_this);
 	    _this.toggleEditInfo = _this.toggleEditInfo.bind(_this);
 	    _this.handleSave = _this.handleSave.bind(_this);
+	    _this.handleDelete = _this.handleDelete.bind(_this);
 	    _this.updateBook = _this.updateBook.bind(_this);
 	    _this.handleTitleChange = _this.handleTitleChange.bind(_this);
 	    _this.handleAuthorsChange = _this.handleAuthorsChange.bind(_this);
@@ -62420,9 +62421,28 @@
 	      this.updateBook();
 	    }
 	  }, {
+	    key: "handleDelete",
+	    value: function handleDelete() {
+	      var _this2 = this;
+
+	      fetch("/api/book", {
+	        method: "DELETE",
+	        headers: {
+	          Accept: "application/json",
+	          "Content-Type": "application/x-www-form-urlencoded"
+	        },
+	        credentials: "same-origin",
+	        body: "isbn=" + encodeURIComponent(this.state.book.isbn)
+	      }).then(function (response) {
+	        return response.json();
+	      }).then(function (json) {
+	        _this2.setState({ book: [], success: [] });
+	      });
+	    }
+	  }, {
 	    key: "getBookData",
 	    value: function getBookData() {
-	      var _this2 = this;
+	      var _this3 = this;
 
 	      fetch("/api/book/" + this.props.params.id, {
 	        method: "GET",
@@ -62434,13 +62454,13 @@
 	      }).then(function (response) {
 	        return response.json();
 	      }).then(function (json) {
-	        _this2.setState({ book: json });
+	        _this3.setState({ book: json });
 	      });
 	    }
 	  }, {
 	    key: "getUserBooks",
 	    value: function getUserBooks() {
-	      var _this3 = this;
+	      var _this4 = this;
 
 	      fetch("/api/settings", {
 	        method: "GET",
@@ -62454,18 +62474,18 @@
 	        return response.json();
 	      }).then(function (json) {
 	        if (json.error) {
-	          _this3.setState({ errors: new Array(json.message) });
-	        } else if (json.username === _this3.state.book.owner) {
-	          _this3.setState({ errors: ["Can't trade own books"] });
+	          _this4.setState({ errors: new Array(json.message) });
+	        } else if (json.username === _this4.state.book.owner) {
+	          _this4.setState({ errors: ["Can't trade own books"] });
 	        } else {
-	          _this3.setState({ books: json.books, active: true });
+	          _this4.setState({ books: json.books, active: true });
 	        }
 	      });
 	    }
 	  }, {
 	    key: "updateBook",
 	    value: function updateBook() {
-	      var _this4 = this;
+	      var _this5 = this;
 
 	      var book = this.state.book;
 	      fetch("/api/book", {
@@ -62481,16 +62501,16 @@
 	        return response.json();
 	      }).then(function (json) {
 	        if (json.error) {
-	          _this4.setState({ errors: new Array(json.message) });
+	          _this5.setState({ errors: new Array(json.message) });
 	        } else {
-	          _this4.setState({ book: json.book, errors: [] });
+	          _this5.setState({ book: json.book, errors: [] });
 	        }
 	      });
 	    }
 	  }, {
 	    key: "handleTradeRequest",
 	    value: function handleTradeRequest(index) {
-	      var _this5 = this;
+	      var _this6 = this;
 
 	      if (index) {
 	        var trade = this.state.trade;
@@ -62508,10 +62528,10 @@
 	          return response.json();
 	        }).then(function (json) {
 	          if (json.error) {
-	            _this5.setState({ errors: new Array(json.message) });
+	            _this6.setState({ errors: new Array(json.message) });
 	          } else {
-	            _this5.setState({ success: json.success });
-	            _this5.onEditInfo();
+	            _this6.setState({ success: json.success });
+	            _this6.onEditInfo();
 	          }
 	        });
 	      }
@@ -62534,6 +62554,7 @@
 	          onProposeTrade: this.getUserBooks,
 	          onEditInfo: this.toggleEditInfo,
 	          onSave: this.handleSave,
+	          onDelete: this.handleDelete,
 	          onTitleChange: this.handleTitleChange,
 	          onAuthorsChange: this.handleAuthorsChange,
 	          onIsbnChange: this.handleIsbnChange,
@@ -62607,6 +62628,7 @@
 	    _this.onDescChange = _this.onDescChange.bind(_this);
 	    _this.onEdit = _this.onEdit.bind(_this);
 	    _this.onSave = _this.onSave.bind(_this);
+	    _this.onDelete = _this.onDelete.bind(_this);
 	    return _this;
 	  }
 
@@ -62650,6 +62672,11 @@
 	    value: function onSave() {
 	      this.props.onEditInfo();
 	      this.props.onSave();
+	    }
+	  }, {
+	    key: "onDelete",
+	    value: function onDelete() {
+	      this.props.onDelete();
 	    }
 	  }, {
 	    key: "render",

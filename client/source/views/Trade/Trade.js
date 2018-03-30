@@ -22,6 +22,7 @@ class Trade extends React.Component {
     this.componentWillMount = this.componentWillMount.bind(this);
     this.toggleEditInfo = this.toggleEditInfo.bind(this);
     this.handleSave = this.handleSave.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
     this.updateBook = this.updateBook.bind(this);
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleAuthorsChange = this.handleAuthorsChange.bind(this);
@@ -101,7 +102,21 @@ class Trade extends React.Component {
   handleSave() {
     this.updateBook();
   }
-
+  handleDelete() {
+    fetch(`/api/book`, {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      credentials: "same-origin",
+      body: `isbn=${encodeURIComponent(this.state.book.isbn)}`
+    })
+      .then(response => response.json())
+      .then(json => {
+        this.setState({ book: [], success: [] });
+      });
+  }
   getBookData() {
     fetch(`/api/book/${this.props.params.id}`, {
       method: "GET",
@@ -198,6 +213,7 @@ class Trade extends React.Component {
           onProposeTrade={this.getUserBooks}
           onEditInfo={this.toggleEditInfo}
           onSave={this.handleSave}
+          onDelete={this.handleDelete}
           onTitleChange={this.handleTitleChange}
           onAuthorsChange={this.handleAuthorsChange}
           onIsbnChange={this.handleIsbnChange}
