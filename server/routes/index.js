@@ -150,7 +150,9 @@ router.post("/library", mid.loggedIn, (req, res, next) => {
       res.status(200).send({ success: [book.title + " added to collection"] });
     });
   } else {
-    let error = new Error("Error: no admin user!");
+    let error = new Error(
+      "Error: have not necessary privileges to add a book!"
+    );
     error.status = 403;
     return next(error);
   }

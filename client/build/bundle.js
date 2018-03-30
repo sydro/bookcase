@@ -36671,11 +36671,11 @@
 	              { className: "header-button-middle", to: "/browse" },
 	              "Browse Books"
 	            ),
-	            React.createElement(
+	            this.props.auth ? React.createElement(
 	              _reactRouter.Link,
 	              { className: "header-button-middle", to: "/search" },
 	              "Add Books"
-	            )
+	            ) : ""
 	          ),
 	          React.createElement(_HeaderButtons2.default, { auth: this.props.auth, onLogout: this.onLogout })
 	        )
@@ -36778,7 +36778,7 @@
 /* 573 */
 /***/ (function(module, exports) {
 
-	module.exports = {"title":"Zei Library"};
+	module.exports = {"title":"My Library"};
 
 /***/ }),
 /* 574 */

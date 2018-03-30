@@ -30,9 +30,13 @@ class Header extends React.Component {
             <Link className="header-button-middle" to="/browse">
               Browse Books
             </Link>
-            <Link className="header-button-middle" to="/search">
-              Add Books
-            </Link>
+            {this.props.auth ? (
+              <Link className="header-button-middle" to="/search">
+                Add Books
+              </Link>
+            ) : (
+              ""
+            )}
           </div>
           <HeaderButtons auth={this.props.auth} onLogout={this.onLogout} />
         </div>
