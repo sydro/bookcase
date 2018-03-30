@@ -91,6 +91,21 @@ router.get("/library/:page/:limit", (req, res, next) => {
     .limit(limit * 1);
 });
 
+router.get("/library/:page/:limit/:search", (req, res, next) => {
+  const page = typeof req.params.page != "undefined" ? req.params.page : 1;
+  const limit = typeof req.params.limit != "undefined" ? req.params.limit : 10;
+  //Book.find({ title: new RegExp(searchRegex) }, (error, books) => {
+  Book.find(
+    { title: { $regex: req.params.search, $options: "i" } },
+    (error, books) => {
+      if (error) {
+        return next(error);
+      }
+      res.status(200).send(books);
+    }
+  );
+});
+
 router.get("/book/:id", (req, res, next) => {
   const id = req.params.id;
   Book.findById(mongoose.Types.ObjectId(id), (error, book) => {

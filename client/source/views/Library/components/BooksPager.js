@@ -19,12 +19,13 @@ class Pager extends React.Component {
   render() {
     if (this.props.books != 0) {
       return (
-        <div>
+        <div id="pagination">
           <Pagination
             onChange={this.handlePageChange}
             current={this.state.current}
-            total={this.props.books}
+            total={this.props.total}
           />
+          <label>Total Books: {this.props.total}</label>
         </div>
       );
     } else {

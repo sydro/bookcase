@@ -687,7 +687,44 @@ input[type="button"]:hover {
   z-index: -1;
 }
 
+.rc-pagination {
+  display: table-cell;
+}
 .rc-pagination-prev a,
 .rc-pagination-next a {
   padding: 0;
+}
+
+.rc-pagination-item {
+  background-color: unset;
+}
+.rc-pagination-item-active {
+  background-color: #2db7f5;
+}
+
+a:focus,
+a:hover {
+  color: white;
+}
+
+#search-form {
+  display: table-cell;
+  vertical-align: top;
+  text-align: left;
+}
+
+#pagination-search {
+  display: inline-table;
+  width: 100%;
+  background: #f4f6f8;
+  padding: 20px;
+  border: 1px solid lightgrey;
+}
+#pagination {
+  float: right;
+}
+#pagination label {
+  padding-left: 20px;
+  vertical-align: middle;
+  display: table-cell;
 }
