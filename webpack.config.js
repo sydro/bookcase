@@ -34,5 +34,16 @@ module.exports = {
     path: path.join(__dirname, "./client/build"),
     filename: "bundle.js"
   },
-  plugins: [HTMLWebpackPluginConfig]
+  plugins: [HTMLWebpackPluginConfig],
+  externals: {
+    Config: JSON.stringify(
+      typeof process.env.LIBRARY_TITLE != "undefined"
+        ? {
+            title: process.env.LIBRARY_TITLE
+          }
+        : {
+            title: "My Library"
+          }
+    )
+  }
 };

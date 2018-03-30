@@ -31,7 +31,7 @@ class SearchForm extends React.Component {
       <div id="search-form">
         <Form inline onSubmit={this.handleSearch}>
           <FormGroup controlId="formInlineName">
-            <ControlLabel>title</ControlLabel>{" "}
+            <ControlLabel>Title:</ControlLabel>{" "}
             <FormControl
               inputRef={node => (this.inputNode = node)}
               type="text"
