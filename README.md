@@ -1,20 +1,18 @@
-# Chart The Stock Market
+# Personal Library
+
+Forked from [jmcilhargey/book-trader](https://github.com/jmcilhargey/book-trader)
 
 ## Overview
 
-A textbook trading app that allows students to search for books with the Google Books API and add them to their collection. Users can browse, search, and sort the student library and propose trades with other students. In app notification let's users know when a trade has been proposed. Trades can be accepted, declined, and canceled. Users can edit their personal settings and mark books as available / unavailable and view pending trades. Authentication done with JWTs and a hash / salt based encryption strategy.
-
-A demo version of the app is located at https://book-trader.herokuapp.com/
-
-![](demo.png)
+A textbook trading app that allows to search for books with the Google Books API and add them to their collection. Users can browse, search, and sort the student library Users can edit their personal settings and mark books as available / unavailable. Authentication done with JWTs and a hash / salt based encryption strategy.
 
 ## Install
 
 The following must be installed to run the project:
 
-* Node    
+* Node
 * NPM
-* MongoDB  
+* MongoDB
 
 And to install the application dependencies:
 
@@ -40,30 +38,31 @@ Navigate to
 
     http://localhost:3000
 
+## Docker run
+
+To run app with docker:
+
+* Create .env file with this variable:
+
+```
+GOOGLE_CLIENT_ID=...
+GOOGLE_CLIENT_SECRET=...
+MONGO_URI=mongodb://username:password@database:27017/bookcase
+JWT_SECRET=...
+```
+
+* Run docker-compose
+
+```
+cd docker
+docker-compose up -d
+```
+
 ## Test
 
 To run the test suite, type the command:
 
     $ npm test
-
-## Stack
-
-| Front-End
-|:---------   
-| HTML5 / CSS3
-| Javascript
-| React
-| React Router
-| Babel
-| Webpack
-
-| Back-End
-|:---------   
-| Node.js
-| Express
-| MongoDB       
-| Mongoose
-| Redis
 
 ## License
 
