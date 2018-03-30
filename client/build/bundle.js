@@ -62311,20 +62311,115 @@
 	    var _this = _possibleConstructorReturn(this, (Trade.__proto__ || Object.getPrototypeOf(Trade)).call(this));
 
 	    _this.state = {
-	      trade: null,
 	      books: null,
 	      active: false,
 	      errors: [],
-	      success: []
+	      success: [],
+	      editInfo: false,
+	      book: null
 	    };
 	    _this.getBookData = _this.getBookData.bind(_this);
 	    _this.getUserBooks = _this.getUserBooks.bind(_this);
 	    _this.handleTradeRequest = _this.handleTradeRequest.bind(_this);
 	    _this.componentWillMount = _this.componentWillMount.bind(_this);
+	    _this.toggleEditInfo = _this.toggleEditInfo.bind(_this);
+	    _this.handleSave = _this.handleSave.bind(_this);
+	    _this.updateBook = _this.updateBook.bind(_this);
+	    _this.handleTitleChange = _this.handleTitleChange.bind(_this);
+	    _this.handleAuthorsChange = _this.handleAuthorsChange.bind(_this);
+	    _this.handleIsbnChange = _this.handleIsbnChange.bind(_this);
+	    _this.handlePagesChange = _this.handlePagesChange.bind(_this);
+	    _this.handleDescChange = _this.handleDescChange.bind(_this);
 	    return _this;
 	  }
 
 	  _createClass(Trade, [{
+	    key: "toggleEditInfo",
+	    value: function toggleEditInfo() {
+	      var info = !this.state.editInfo;
+	      this.setState({ editInfo: info });
+	    }
+	  }, {
+	    key: "handleTitleChange",
+	    value: function handleTitleChange(change) {
+	      var b = this.state.book;
+	      this.setState({
+	        book: {
+	          title: change,
+	          authors: b.authors,
+	          isbn: b.isbn,
+	          pages: b.pages,
+	          image: b.image,
+	          description: b.description
+	        }
+	      });
+	    }
+	  }, {
+	    key: "handleAuthorsChange",
+	    value: function handleAuthorsChange(change) {
+	      var b = this.state.book;
+	      this.setState({
+	        book: {
+	          title: b.title,
+	          authors: change,
+	          isbn: b.isbn,
+	          pages: b.pages,
+	          image: b.image,
+	          description: b.description
+	        }
+	      });
+	    }
+	  }, {
+	    key: "handleIsbnChange",
+	    value: function handleIsbnChange(change) {
+	      var b = this.state.book;
+	      this.setState({
+	        book: {
+	          title: b.title,
+	          authors: b.authors,
+	          isbn: change,
+	          pages: b.pages,
+	          image: b.image,
+	          description: b.description
+	        }
+	      });
+	    }
+	  }, {
+	    key: "handlePagesChange",
+	    value: function handlePagesChange(change) {
+	      var b = this.state.book;
+	      this.setState({
+	        book: {
+	          title: b.title,
+	          authors: b.authors,
+	          isbn: b.isbn,
+	          pages: change,
+	          image: b.image,
+	          description: b.description
+	        }
+	      });
+	    }
+	  }, {
+	    key: "handleDescChange",
+	    value: function handleDescChange(change) {
+	      var b = this.state.book;
+	      this.setState({
+	        book: {
+	          title: b.title,
+	          authors: b.authors,
+	          isbn: b.isbn,
+	          pages: b.pages,
+	          image: b.image,
+	          description: change
+	        }
+	      });
+	    }
+	  }, {
+	    key: "handleSave",
+	    value: function handleSave() {
+	      this.updateBook();
+	    }
+	  }, {
 	    key: "getBookData",
 	    value: function getBookData() {
 	      var _this2 = this;
@@ -62339,7 +62434,7 @@
 	      }).then(function (response) {
 	        return response.json();
 	      }).then(function (json) {
-	        _this2.setState({ trade: json });
+	        _this2.setState({ book: json });
 	      });
 	    }
 	  }, {
@@ -62360,7 +62455,7 @@
 	      }).then(function (json) {
 	        if (json.error) {
 	          _this3.setState({ errors: new Array(json.message) });
-	        } else if (json.username === _this3.state.trade.owner) {
+	        } else if (json.username === _this3.state.book.owner) {
 	          _this3.setState({ errors: ["Can't trade own books"] });
 	        } else {
 	          _this3.setState({ books: json.books, active: true });
@@ -62368,9 +62463,34 @@
 	      });
 	    }
 	  }, {
+	    key: "updateBook",
+	    value: function updateBook() {
+	      var _this4 = this;
+
+	      var book = this.state.book;
+	      fetch("/api/book", {
+	        method: "PUT",
+	        headers: {
+	          Accept: "application/json",
+	          "Content-Type": "application/x-www-form-urlencoded",
+	          "X-Access-Token": localStorage.token
+	        },
+	        credentials: "same-origin",
+	        body: "book=" + encodeURIComponent(JSON.stringify(book))
+	      }).then(function (response) {
+	        return response.json();
+	      }).then(function (json) {
+	        if (json.error) {
+	          _this4.setState({ errors: new Array(json.message) });
+	        } else {
+	          _this4.setState({ book: json.book, errors: [] });
+	        }
+	      });
+	    }
+	  }, {
 	    key: "handleTradeRequest",
 	    value: function handleTradeRequest(index) {
-	      var _this4 = this;
+	      var _this5 = this;
 
 	      if (index) {
 	        var trade = this.state.trade;
@@ -62388,9 +62508,10 @@
 	          return response.json();
 	        }).then(function (json) {
 	          if (json.error) {
-	            _this4.setState({ errors: new Array(json.message) });
+	            _this5.setState({ errors: new Array(json.message) });
 	          } else {
-	            _this4.setState({ success: json.success });
+	            _this5.setState({ success: json.success });
+	            _this5.onEditInfo();
 	          }
 	        });
 	      }
@@ -62407,9 +62528,17 @@
 	        "div",
 	        { className: "trade-container" },
 	        React.createElement(_BookTrade2.default, {
-	          trade: this.state.trade,
+	          editInfo: this.state.editInfo,
+	          book: this.state.book,
 	          active: this.state.active,
 	          onProposeTrade: this.getUserBooks,
+	          onEditInfo: this.toggleEditInfo,
+	          onSave: this.handleSave,
+	          onTitleChange: this.handleTitleChange,
+	          onAuthorsChange: this.handleAuthorsChange,
+	          onIsbnChange: this.handleIsbnChange,
+	          onPagesChange: this.handlePagesChange,
+	          onDescChange: this.handleDescChange,
 	          errors: this.state.errors,
 	          success: this.state.success
 	        }),
@@ -62471,84 +62600,148 @@
 	    var _this = _possibleConstructorReturn(this, (BookTrade.__proto__ || Object.getPrototypeOf(BookTrade)).call(this, props));
 
 	    _this.onProposeTrade = _this.onProposeTrade.bind(_this);
+	    _this.onTitleChange = _this.onTitleChange.bind(_this);
+	    _this.onAuthorsChange = _this.onAuthorsChange.bind(_this);
+	    _this.onIsbnChange = _this.onIsbnChange.bind(_this);
+	    _this.onPagesChange = _this.onPagesChange.bind(_this);
+	    _this.onDescChange = _this.onDescChange.bind(_this);
+	    _this.onEdit = _this.onEdit.bind(_this);
+	    _this.onSave = _this.onSave.bind(_this);
 	    return _this;
 	  }
 
 	  _createClass(BookTrade, [{
+	    key: "onTitleChange",
+	    value: function onTitleChange(event) {
+	      this.props.onTitleChange(event.target.value);
+	    }
+	  }, {
+	    key: "onAuthorsChange",
+	    value: function onAuthorsChange(event) {
+	      this.props.onAuthorsChange(event.target.value);
+	    }
+	  }, {
+	    key: "onIsbnChange",
+	    value: function onIsbnChange(event) {
+	      this.props.onIsbnChange(event.target.value);
+	    }
+	  }, {
+	    key: "onPagesChange",
+	    value: function onPagesChange(event) {
+	      this.props.onPagesChange(event.target.value);
+	    }
+	  }, {
+	    key: "onDescChange",
+	    value: function onDescChange(event) {
+	      this.props.onDescChange(event.target.value);
+	    }
+	  }, {
 	    key: "onProposeTrade",
 	    value: function onProposeTrade() {
 	      this.props.onProposeTrade();
 	    }
 	  }, {
+	    key: "onEdit",
+	    value: function onEdit() {
+	      this.props.onEditInfo();
+	    }
+	  }, {
+	    key: "onSave",
+	    value: function onSave() {
+	      this.props.onEditInfo();
+	      this.props.onSave();
+	    }
+	  }, {
 	    key: "render",
 	    value: function render() {
-	      var trade = this.props.trade;
+	      var book = this.props.book;
 	      var active = this.props.active;
-	      if (trade) {
+	      var auth = this.props.auth;
+
+	      if (book) {
 	        return React.createElement(
 	          "div",
-	          null,
+	          { className: "trade-all" },
 	          React.createElement(
 	            "div",
 	            { className: "trade-info" },
-	            React.createElement("img", { className: "trade-image", src: trade.image, alt: trade.title }),
+	            React.createElement("img", { className: "trade-image", src: book.image, alt: book.title }),
 	            React.createElement(
 	              "div",
 	              { className: "trade-detail" },
 	              React.createElement(
-	                "p",
-	                null,
+	                "div",
+	                { className: "book-fields" },
 	                React.createElement(
-	                  "b",
+	                  "div",
 	                  null,
-	                  trade.title
-	                )
-	              ),
-	              React.createElement(
-	                "p",
-	                null,
+	                  React.createElement(
+	                    "b",
+	                    null,
+	                    this.props.editInfo ? React.createElement(
+	                      "div",
+	                      null,
+	                      "Title: ",
+	                      React.createElement("input", { className: "form-input", type: "text", value: book.title, onChange: this.onTitleChange })
+	                    ) : book.title
+	                  )
+	                ),
 	                React.createElement(
-	                  "i",
+	                  "div",
 	                  null,
-	                  trade.authors
+	                  this.props.editInfo ? React.createElement(
+	                    "div",
+	                    null,
+	                    "Authors: ",
+	                    React.createElement("input", { className: "form-input", type: "text", value: book.authors, onChange: this.onAuthorsChange })
+	                  ) : book.authors
+	                ),
+	                React.createElement(
+	                  "div",
+	                  null,
+	                  "ISBN: ",
+	                  this.props.editInfo ? React.createElement("input", { disabled: true, className: "form-input", type: "text", value: book.isbn, onChange: this.onIsbnChange }) : book.isbn
+	                ),
+	                React.createElement(
+	                  "div",
+	                  null,
+	                  "Pages: ",
+	                  this.props.editInfo ? React.createElement("input", { className: "form-input", type: "text", value: book.pages, onChange: this.onPagesChange }) : book.pages
 	                )
-	              ),
-	              React.createElement(
-	                "p",
-	                null,
-	                "ISBN ",
-	                trade.isbn
-	              ),
-	              React.createElement(
-	                "p",
-	                null,
-	                trade.pages,
-	                " pages"
-	              ),
-	              React.createElement(
-	                "p",
-	                null,
-	                "Owner: ",
-	                trade.owner
-	              ),
-	              active ? null : React.createElement(
-	                "button",
-	                { className: "propose-button", onClick: this.onProposeTrade },
-	                "Propose Trade"
 	              ),
 	              React.createElement(
 	                "button",
 	                { className: "back-button", onClick: _reactRouter.browserHistory.goBack },
 	                "Back"
 	              ),
+	              React.createElement("br", null),
+	              this.props.editInfo ? React.createElement(
+	                "button",
+	                { className: "save-button", onClick: this.onSave },
+	                "Save"
+	              ) : React.createElement(
+	                "button",
+	                { className: "button-custom", onClick: this.onEdit },
+	                "Edit"
+	              ),
+	              auth ? null : React.createElement(
+	                "button",
+	                { className: "button-custom", onClick: this.onDelete },
+	                "Delete"
+	              ),
 	              React.createElement(_ErrorMessage2.default, { errors: this.props.errors }),
 	              React.createElement(_SuccessMessage2.default, { success: this.props.success })
 	            )
 	          ),
 	          React.createElement(
-	            "p",
-	            null,
-	            trade.description
+	            "div",
+	            { className: "description" },
+	            this.props.editInfo ? React.createElement(
+	              "div",
+	              null,
+	              "Description: ",
+	              React.createElement("textarea", { className: "form-textarea", value: book.description, onChange: this.onDescChange })
+	            ) : book.description
 	          )
 	        );
 	      } else {
@@ -63015,7 +63208,7 @@
 
 
 	// module
-	exports.push([module.id, "* {\n  box-sizing: border-box;\n}\n\nbody {\n  margin: 0;\n  padding: 0;\n  font-family: \"Open Sans\", sans-serif;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n  color: #212121;\n  letter-spacing: 0.05em;\n}\n\nh1,\nh2,\nh3,\np,\ninput,\nli,\nlabel {\n  font-weight: 300;\n  letter-spacing: 0.04em;\n}\n\nh1 {\n  margin: 1em 0;\n}\n\nth {\n  font-weight: 600;\n}\n\nsvg {\n  width: 32px;\n  height: 32px;\n}\n\ng {\n  fill: #616161;\n}\n\na,\nbutton,\ninput[type=\"submit\"],\ninput[type=\"button\"] {\n  padding: 0.6em 1.5em;\n  opacity: 0.85;\n  cursor: pointer;\n  transition: all 0.25s ease-in;\n  -webkit-transition: all 0.25s ease-in;\n  border-radius: 2px;\n  color: #ffffff;\n  font-size: 0.9em;\n  border: none;\n}\n\ninput:focus,\nbutton:focus,\ninput[type=\"submit\"]:focus,\ninput[type=\"button\"]:focus {\n  outline: none;\n}\n\na:hover,\nbutton:hover,\ninput[type=\"button\"]:hover {\n  opacity: 1;\n}\n\n.main-container {\n  display: flex;\n  display: -webkit-flex;\n  min-height: 100vh;\n  flex-direction: column;\n}\n\n.main-body {\n  display: flex;\n  display: -webkit-flex;\n  flex: 1;\n  -webkit-flex: 1;\n}\n\n/* Header */\n\n.header-container {\n  display: flex;\n  display: -webkit-flex;\n  align-items: center;\n  -webkit-align-items: center;\n  justify-content: center;\n  -webkit-justify-content: center;\n  padding: 1.5em;\n}\n\n.header-home {\n  color: #ffffff;\n  background-color: transparent;\n}\n\n.header-route {\n  color: inherit;\n  background-color: #f4f6f8;\n}\n\n.header-left {\n  flex: 1;\n  -webkit-flex: 1;\n  display: flex;\n  display: -webkit-flex;\n  align-items: baseline;\n  -webkit-align-items: baseline;\n}\n\n.header-title {\n  margin: 0;\n  font-size: 1.75em;\n}\n\n.header-title > a {\n  padding: 0;\n  font-weight: 300;\n  color: inherit;\n  text-decoration: none;\n}\n\n.header-text {\n  margin: 0 0 0 1em;\n  font-size: 0.9em;\n}\n\n.header-right {\n  flex: 1;\n  -webkit-flex: 1;\n  display: flex;\n  display: -webkit-flex;\n  justify-content: flex-end;\n  -webkit-justify-content: flex-end;\n}\n\n.header-button-middle {\n  margin-right: 1em;\n  text-decoration: none;\n  background-color: #311b92;\n}\n\n.header-button-right {\n  margin-right: 1em;\n  text-decoration: none;\n  background-color: #ff3d00;\n}\n\n/* Footer */\n\n.footer-container {\n  background-color: #e4e6e8;\n  margin-top: 1em;\n}\n\n.footer-container > p {\n  text-align: center;\n  margin: 0;\n  padding: 1em;\n}\n\n/* Home View */\n\n.home-container {\n  flex: 1;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n}\n\n.home-image {\n  display: flex;\n  display: -webkit-flex;\n  align-items: center;\n  -webkit-align-items: center;\n  width: 100%;\n  height: 600px;\n  position: relative;\n  z-index: -1;\n  top: -10em;\n  left: 0;\n  background-image: url(" + __webpack_require__(902) + ");\n  background-position: top center;\n  background-repeat: no-repeat;\n  background-size: cover;\n  transition: opacity 0.4s linear;\n  -webkit-transition: opacity 0.4s linear;\n}\n\n.home-loading {\n  opacity: 0;\n}\n\n.home-loaded {\n  opacity: 0.8;\n}\n\n.home-image > h1 {\n  flex: 1;\n  -webkit-flex: 1;\n  text-align: center;\n  color: #ffffff;\n  font-size: 3.25em;\n  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);\n}\n\n.home-section {\n  position: relative;\n  top: -100px;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n}\n\n.home-detail {\n  flex: 1;\n  -webkit-flex: 1;\n  display: flex;\n  display: -webkit-flex;\n  justify-content: center;\n  -webkit-justify-content: center;\n  align-items: center;\n  -webkit-align-items: center;\n}\n\n.home-detail > h2 {\n  margin: 0;\n  padding: 1em 0;\n  border-bottom: 2px solid #cccccc;\n}\n\n.home-detail > i {\n  margin-right: 0.5em;\n}\n\n/* Account View */\n\n.account-container {\n  margin: 0 auto;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n  align-items: center;\n  -webkit-align-items: center;\n}\n\n.account-container svg {\n  position: relative;\n  top: 10px;\n}\n\n.form-container {\n  flex: 1;\n  -webkit-flex: 1;\n}\n\n.form-input {\n  color: inherit;\n  width: 15em;\n  font-size: 1em;\n  padding: 0.4em 0.2em;\n  outline: none;\n}\n\n.form-button {\n  margin-left: 1em;\n  font-size: 0.9em;\n  background-color: #02b875;\n}\n\n.search-container {\n  width: 64em;\n  margin-top: 1em;\n  display: flex;\n  display: -webkit-flex;\n}\n\n.data-label {\n  line-height: 100%;\n}\n\n.search-results {\n  display: flex;\n  display: -webkit-flex;\n  flex-wrap: wrap;\n  -webkit-flex-wrap: wrap;\n}\n\n.book-entry {\n  color: inherit;\n  text-decoration: none;\n  opacity: 1;\n  font-size: 1em;\n  flex: 0 0 16.67%;\n  -webkit-flex: 0 0 16.67%;\n  margin: 0 1em;\n  padding: 0;\n  text-align: center;\n  cursor: pointer;\n  transition: color 0.25s ease-in;\n  -webkit-transition: color 0.25s ease-in;\n}\n\n.book-entry:hover {\n  color: #02b875;\n}\n\n.book-detail {\n  flex: 0 0 20em;\n  background: aliceblue;\n  border: 1px solid;\n  padding: 10px;\n}\n\n.book-detail > button {\n  background-color: #02b875;\n}\n\n.book-image {\n  margin-top: 1em;\n  width: calc(60em / 6);\n  border: 1px solid #cccccc;\n}\n\n/* Register View */\n\n.register-container {\n  margin: 0 auto;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n  align-items: center;\n  -webkit-align-items: center;\n}\n\n.register-form {\n  width: 15em;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n}\n\n.register-input {\n  margin-bottom: 1em;\n  flex: 1;\n  -webkit-flex: 1;\n  color: inherit;\n  font-size: 1em;\n  padding: 0.4em 0.2em;\n  outline: none;\n}\n\n.register-submit {\n  margin: 1em 0;\n  opacity: 0.8;\n  cursor: pointer;\n  transition: all 0.25s ease-in;\n  -webkit-transition: all 0.25s ease-in;\n  background-color: #02b875;\n}\n\n.register-submit:hover {\n  opacity: 1;\n}\n\n.error-messages {\n  color: #ef5350;\n}\n\n.error-messages > p {\n  margin: 1em 0 0 0;\n  text-align: center;\n}\n\n.success-messages {\n  color: #02b875;\n}\n\n/* Login View */\n\n.login-container {\n  margin: 0 auto;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n  align-items: center;\n  -webkit-align-items: center;\n}\n\n.login-form {\n  width: 15em;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n}\n\n.login-input {\n  margin-bottom: 1em;\n  flex: 1;\n  -webkit-flex: 1;\n  color: inherit;\n  font-size: 1em;\n  padding: 0.4em 0.2em;\n  outline: none;\n}\n\n.login-submit {\n  margin: 1em 0;\n  cursor: pointer;\n  transition: all 0.25s ease-in;\n  -webkit-transition: all 0.25s ease-in;\n  border-radius: 2px;\n  background-color: #02b875;\n}\n\n/* Settings View */\n\n.settings-container {\n  margin: 0 auto;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n  align-items: flex-start;\n  -webkit-align-items: flex-start;\n}\n\n.settings-control {\n  margin-top: 2em;\n  display: flex;\n  display: -webkit-flex;\n  align-items: center;\n  -webkit-align-items: center;\n}\n\n.settings-control > h2 {\n  margin: 0;\n  flex: 1;\n  -webkit-flex: 1;\n}\n\n.info-button {\n  margin-left: 2em;\n  background-color: #1565c0;\n}\n\n.book-button {\n  margin-left: 1em;\n  background-color: #b71c1c;\n}\n\n.save-button {\n  margin-left: 2em;\n  background-color: #02b875;\n}\n\n.user-info {\n  margin-top: 1em;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n  justify-content: center;\n  -webkit-justify-content: center;\n  list-style: none;\n}\n\n.user-name {\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n}\n\n.user-datum {\n  display: flex;\n  display: -webkit-flex;\n  justify-content: flex-start;\n  -webkit-justify-content: flex-start;\n  align-items: center;\n  -webkit-align-items: center;\n}\n\n.user-datum > i {\n  flex: 0 0 auto;\n  -webkit-flex: 0 0 auto;\n}\n\n.user-datum > h3 {\n  margin: 0.4em 0;\n  padding-left: 0.5em;\n  font-size: 1.2em;\n  flex: 1 1 auto;\n  -webkit-flex: 1 1 auto;\n}\n\n.user-name > h3 {\n  margin: 0.4em 0.55em;\n}\n\n.user-datum b {\n  padding-right: 0.5em;\n}\n\n.user-books {\n  margin-top: 1em;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n}\n\n.user-books > h3 {\n  margin-top: 0;\n}\n\n.user-book {\n  text-align: center;\n  flex: 1;\n  -webkit-flex: 1;\n}\n\n.user-book td {\n  position: relative;\n  padding: 0.5em;\n}\n\n.user-book-image {\n  display: inline-block;\n  position: relative;\n  z-index: -1;\n  margin: 0 auto;\n  border: 1px solid #cccccc;\n  height: 100px;\n  width: auto;\n}\n\n.user-book-svg {\n  position: absolute;\n  width: 32px;\n  height: 32px;\n  top: 42px;\n  right: 30px;\n  cursor: pointer;\n}\n\n.top-layer {\n  z-index: 1;\n}\n\n.bottom-layer {\n  z-index: -1;\n}\n\n.save g {\n  fill: #02b875;\n}\n\n.remove g {\n  fill: #f44336;\n}\n\n.user-book input[type=\"radio\"] {\n  margin-top: 0.75em;\n}\n\n.trade-buttons {\n  text-align: center;\n  flex: 1;\n  -webkit-flex: 1;\n}\n\n.accept-button {\n  background-color: #02b875;\n}\n\n.decline-button {\n  margin-left: 1em;\n  background-color: #b71c1c;\n}\n\n.cancel-button {\n  background-color: #b71c1c;\n}\n\n/* Library View */\n\n.library-container {\n  margin: 0 auto;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n  align-items: center;\n  -webkit-align-items: center;\n}\n\n/* Trade View */\n\n.trade-container {\n  width: 50em;\n  margin: 0 auto;\n  margin-top: 2em;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: row;\n  -webkit-flex-direction: row;\n}\n\n.book-container {\n  display: flex;\n  display: -webkit-flex;\n  align-items: center;\n  -webkit-align-items: center;\n}\n\n.trade-info {\n  flex: 0 0 auto;\n  -webkit-flex: 0 0 auto;\n  display: flex;\n  display: -webkit-flex;\n}\n\n.trade-image {\n  max-height: 300px;\n  width: auto;\n  flex: 0 0 auto;\n  -webkit-flex: 0 0 auto;\n  border: 1px solid #cccccc;\n}\n\n.trade-detail {\n  flex: 1;\n  -webkit-flex: 1;\n  text-align: center;\n}\n\n.propose-button {\n  background-color: #1565c0;\n}\n\n.back-button {\n  margin-left: 1em;\n  background-color: #1565c0;\n}\n\n.trade-form {\n  flex: 0 0 16em;\n  -webkit-flex: 0 0 16em;\n}\n\n.trade-checkbox {\n  padding-top: 0.75em;\n}\n\n.trade-checkbox input {\n  margin-right: 0.5em;\n  position: relative;\n  bottom: 1px;\n}\n\n.trade-button {\n  margin-top: 1em;\n  transition: all 0.25s ease-in;\n  -webkit-transition: all 0.25s ease-in;\n  background-color: #02b875;\n}\n\n.trade-button:hover {\n  opacity: 1;\n}\n\n#scanner-container video {\n  position: absolute;\n  z-index: -1;\n}\n\n.rc-pagination {\n  display: table-cell;\n}\n.rc-pagination-prev a,\n.rc-pagination-next a {\n  padding: 0;\n}\n\n.rc-pagination-item {\n  background-color: unset;\n}\n.rc-pagination-item-active {\n  background-color: #2db7f5;\n}\n\na:focus,\na:hover {\n  color: white;\n}\n\n#search-form {\n  display: table-cell;\n  vertical-align: top;\n  text-align: left;\n}\n\n#pagination-search {\n  display: inline-table;\n  width: 100%;\n  background: #f4f6f8;\n  padding: 20px;\n  border: 1px solid lightgrey;\n}\n#pagination {\n  float: right;\n}\n#pagination label {\n  padding-left: 20px;\n  vertical-align: middle;\n  display: table-cell;\n}\n", ""]);
+	exports.push([module.id, "* {\n  box-sizing: border-box;\n}\n\nbody {\n  margin: 0;\n  padding: 0;\n  font-family: \"Open Sans\", sans-serif;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n  color: #212121;\n  letter-spacing: 0.05em;\n}\n\nh1,\nh2,\nh3,\np,\ninput,\nli,\nlabel {\n  font-weight: 300;\n  letter-spacing: 0.04em;\n}\n\nh1 {\n  margin: 1em 0;\n}\n\nth {\n  font-weight: 600;\n}\n\nsvg {\n  width: 32px;\n  height: 32px;\n}\n\ng {\n  fill: #616161;\n}\n\na,\nbutton,\ninput[type=\"submit\"],\ninput[type=\"button\"] {\n  padding: 0.6em 1.5em;\n  opacity: 0.85;\n  cursor: pointer;\n  transition: all 0.25s ease-in;\n  -webkit-transition: all 0.25s ease-in;\n  border-radius: 2px;\n  color: #ffffff;\n  font-size: 0.9em;\n  border: none;\n}\n\ninput:focus,\nbutton:focus,\ninput[type=\"submit\"]:focus,\ninput[type=\"button\"]:focus {\n  outline: none;\n}\n\na:hover,\nbutton:hover,\ninput[type=\"button\"]:hover {\n  opacity: 1;\n}\n\n.main-container {\n  display: flex;\n  display: -webkit-flex;\n  min-height: 100vh;\n  flex-direction: column;\n}\n\n.main-body {\n  display: flex;\n  display: -webkit-flex;\n  flex: 1;\n  -webkit-flex: 1;\n}\n\n/* Header */\n\n.header-container {\n  display: flex;\n  display: -webkit-flex;\n  align-items: center;\n  -webkit-align-items: center;\n  justify-content: center;\n  -webkit-justify-content: center;\n  padding: 1.5em;\n}\n\n.header-home {\n  color: #ffffff;\n  background-color: transparent;\n}\n\n.header-route {\n  color: inherit;\n  background-color: #f4f6f8;\n}\n\n.header-left {\n  flex: 1;\n  -webkit-flex: 1;\n  display: flex;\n  display: -webkit-flex;\n  align-items: baseline;\n  -webkit-align-items: baseline;\n}\n\n.header-title {\n  margin: 0;\n  font-size: 1.75em;\n}\n\n.header-title > a {\n  padding: 0;\n  font-weight: 300;\n  color: inherit;\n  text-decoration: none;\n}\n\n.header-text {\n  margin: 0 0 0 1em;\n  font-size: 0.9em;\n}\n\n.header-right {\n  flex: 1;\n  -webkit-flex: 1;\n  display: flex;\n  display: -webkit-flex;\n  justify-content: flex-end;\n  -webkit-justify-content: flex-end;\n}\n\n.header-button-middle {\n  margin-right: 1em;\n  text-decoration: none;\n  background-color: #311b92;\n}\n\n.header-button-right {\n  margin-right: 1em;\n  text-decoration: none;\n  background-color: #ff3d00;\n}\n\n/* Footer */\n\n.footer-container {\n  background-color: #e4e6e8;\n  margin-top: 1em;\n}\n\n.footer-container > p {\n  text-align: center;\n  margin: 0;\n  padding: 1em;\n}\n\n/* Home View */\n\n.home-container {\n  flex: 1;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n}\n\n.home-image {\n  display: flex;\n  display: -webkit-flex;\n  align-items: center;\n  -webkit-align-items: center;\n  width: 100%;\n  height: 600px;\n  position: relative;\n  z-index: -1;\n  top: -10em;\n  left: 0;\n  background-image: url(" + __webpack_require__(902) + ");\n  background-position: top center;\n  background-repeat: no-repeat;\n  background-size: cover;\n  transition: opacity 0.4s linear;\n  -webkit-transition: opacity 0.4s linear;\n}\n\n.home-loading {\n  opacity: 0;\n}\n\n.home-loaded {\n  opacity: 0.8;\n}\n\n.home-image > h1 {\n  flex: 1;\n  -webkit-flex: 1;\n  text-align: center;\n  color: #ffffff;\n  font-size: 3.25em;\n  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);\n}\n\n.home-section {\n  position: relative;\n  top: -100px;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n}\n\n.home-detail {\n  flex: 1;\n  -webkit-flex: 1;\n  display: flex;\n  display: -webkit-flex;\n  justify-content: center;\n  -webkit-justify-content: center;\n  align-items: center;\n  -webkit-align-items: center;\n}\n\n.home-detail > h2 {\n  margin: 0;\n  padding: 1em 0;\n  border-bottom: 2px solid #cccccc;\n}\n\n.home-detail > i {\n  margin-right: 0.5em;\n}\n\n/* Account View */\n\n.account-container {\n  margin: 0 auto;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n  align-items: center;\n  -webkit-align-items: center;\n}\n\n.account-container svg {\n  position: relative;\n  top: 10px;\n}\n\n.form-container {\n  flex: 1;\n  -webkit-flex: 1;\n}\n\n.form-input {\n  color: inherit;\n  width: 15em;\n  font-size: 1em;\n  padding: 0.4em 0.2em;\n  outline: none;\n}\n\n.form-button {\n  margin-left: 1em;\n  font-size: 0.9em;\n  background-color: #02b875;\n}\n\n.form-textarea {\n  width: 100%;\n  height: 100px;\n}\n.search-container {\n  width: 64em;\n  margin-top: 1em;\n  display: flex;\n  display: -webkit-flex;\n}\n\n.data-label {\n  line-height: 100%;\n}\n\n.search-results {\n  display: flex;\n  display: -webkit-flex;\n  flex-wrap: wrap;\n  -webkit-flex-wrap: wrap;\n}\n\n.book-entry {\n  color: inherit;\n  text-decoration: none;\n  opacity: 1;\n  font-size: 1em;\n  flex: 0 0 16.67%;\n  -webkit-flex: 0 0 16.67%;\n  margin: 0 1em;\n  padding: 0;\n  text-align: center;\n  cursor: pointer;\n  transition: color 0.25s ease-in;\n  -webkit-transition: color 0.25s ease-in;\n}\n\n.book-entry:hover {\n  color: #02b875;\n}\n\n.book-detail {\n  flex: 0 0 20em;\n  background: aliceblue;\n  border: 1px solid;\n  padding: 10px;\n}\n\n.book-detail > button {\n  background-color: #02b875;\n}\n\n.book-image {\n  margin-top: 1em;\n  width: calc(60em / 6);\n  border: 1px solid #cccccc;\n}\n\n/* Register View */\n\n.register-container {\n  margin: 0 auto;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n  align-items: center;\n  -webkit-align-items: center;\n}\n\n.register-form {\n  width: 15em;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n}\n\n.register-input {\n  margin-bottom: 1em;\n  flex: 1;\n  -webkit-flex: 1;\n  color: inherit;\n  font-size: 1em;\n  padding: 0.4em 0.2em;\n  outline: none;\n}\n\n.register-submit {\n  margin: 1em 0;\n  opacity: 0.8;\n  cursor: pointer;\n  transition: all 0.25s ease-in;\n  -webkit-transition: all 0.25s ease-in;\n  background-color: #02b875;\n}\n\n.register-submit:hover {\n  opacity: 1;\n}\n\n.error-messages {\n  color: #ef5350;\n}\n\n.error-messages > p {\n  margin: 1em 0 0 0;\n  text-align: center;\n}\n\n.success-messages {\n  color: #02b875;\n}\n\n/* Login View */\n\n.login-container {\n  margin: 0 auto;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n  align-items: center;\n  -webkit-align-items: center;\n}\n\n.login-form {\n  width: 15em;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n}\n\n.login-input {\n  margin-bottom: 1em;\n  flex: 1;\n  -webkit-flex: 1;\n  color: inherit;\n  font-size: 1em;\n  padding: 0.4em 0.2em;\n  outline: none;\n}\n\n.login-submit {\n  margin: 1em 0;\n  cursor: pointer;\n  transition: all 0.25s ease-in;\n  -webkit-transition: all 0.25s ease-in;\n  border-radius: 2px;\n  background-color: #02b875;\n}\n\n/* Settings View */\n\n.settings-container {\n  margin: 0 auto;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n  align-items: flex-start;\n  -webkit-align-items: flex-start;\n}\n\n.settings-control {\n  margin-top: 2em;\n  display: flex;\n  display: -webkit-flex;\n  align-items: center;\n  -webkit-align-items: center;\n}\n\n.settings-control > h2 {\n  margin: 0;\n  flex: 1;\n  -webkit-flex: 1;\n}\n\n.info-button {\n  margin-left: 2em;\n  background-color: #1565c0;\n}\n\n.book-button {\n  margin-left: 1em;\n  background-color: #b71c1c;\n}\n\n.save-button {\n  margin-left: 2em;\n  background-color: #02b875;\n}\n\n.user-info {\n  margin-top: 1em;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n  justify-content: center;\n  -webkit-justify-content: center;\n  list-style: none;\n}\n\n.user-name {\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n}\n\n.user-datum {\n  display: flex;\n  display: -webkit-flex;\n  justify-content: flex-start;\n  -webkit-justify-content: flex-start;\n  align-items: center;\n  -webkit-align-items: center;\n}\n\n.user-datum > i {\n  flex: 0 0 auto;\n  -webkit-flex: 0 0 auto;\n}\n\n.user-datum > h3 {\n  margin: 0.4em 0;\n  padding-left: 0.5em;\n  font-size: 1.2em;\n  flex: 1 1 auto;\n  -webkit-flex: 1 1 auto;\n}\n\n.user-name > h3 {\n  margin: 0.4em 0.55em;\n}\n\n.user-datum b {\n  padding-right: 0.5em;\n}\n\n.user-books {\n  margin-top: 1em;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n}\n\n.user-books > h3 {\n  margin-top: 0;\n}\n\n.user-book {\n  text-align: center;\n  flex: 1;\n  -webkit-flex: 1;\n}\n\n.user-book td {\n  position: relative;\n  padding: 0.5em;\n}\n\n.user-book-image {\n  display: inline-block;\n  position: relative;\n  z-index: -1;\n  margin: 0 auto;\n  border: 1px solid #cccccc;\n  height: 100px;\n  width: auto;\n}\n\n.user-book-svg {\n  position: absolute;\n  width: 32px;\n  height: 32px;\n  top: 42px;\n  right: 30px;\n  cursor: pointer;\n}\n\n.top-layer {\n  z-index: 1;\n}\n\n.bottom-layer {\n  z-index: -1;\n}\n\n.save g {\n  fill: #02b875;\n}\n\n.remove g {\n  fill: #f44336;\n}\n\n.user-book input[type=\"radio\"] {\n  margin-top: 0.75em;\n}\n\n.trade-buttons {\n  text-align: center;\n  flex: 1;\n  -webkit-flex: 1;\n}\n\n.accept-button {\n  background-color: #02b875;\n}\n\n.decline-button {\n  margin-left: 1em;\n  background-color: #b71c1c;\n}\n\n.cancel-button {\n  background-color: #b71c1c;\n}\n\n/* Library View */\n\n.library-container {\n  margin: 0 auto;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n  align-items: center;\n  -webkit-align-items: center;\n}\n\n/* Trade View */\n\n.trade-container {\n  width: 50em;\n  margin: 0 auto;\n  margin-top: 2em;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: row;\n  -webkit-flex-direction: row;\n}\n\n.book-container {\n  display: flex;\n  display: -webkit-flex;\n  align-items: center;\n  -webkit-align-items: center;\n}\n\n.trade-all {\n  width: 100%;\n}\n\n.trade-info {\n  flex: 0 0 auto;\n  -webkit-flex: 0 0 auto;\n  display: flex;\n  display: -webkit-flex;\n}\n\n.trade-image {\n  max-height: 300px;\n  width: auto;\n  flex: 0 0 auto;\n  -webkit-flex: 0 0 auto;\n  border: 1px solid #cccccc;\n  width: 20%;\n}\n\n.trade-detail {\n  flex: 1;\n  -webkit-flex: 1;\n  text-align: center;\n  width: 80%;\n}\n\n.propose-button, .button-custom {\n  margin: 0.5em;\n  background-color: #1565c0;\n}\n\n.back-button {\n  background-color: #1565c0;\n}\n\n.trade-form {\n  flex: 0 0 16em;\n  -webkit-flex: 0 0 16em;\n}\n\n.trade-checkbox {\n  padding-top: 0.75em;\n}\n\n.trade-checkbox input {\n  margin-right: 0.5em;\n  position: relative;\n  bottom: 1px;\n}\n\n.trade-button {\n  margin-top: 1em;\n  transition: all 0.25s ease-in;\n  -webkit-transition: all 0.25s ease-in;\n  background-color: #02b875;\n}\n\n.trade-button:hover {\n  opacity: 1;\n}\n\n#scanner-container video {\n  position: absolute;\n  z-index: -1;\n}\n\n.rc-pagination {\n  display: table-cell;\n}\n.rc-pagination-prev a,\n.rc-pagination-next a {\n  padding: 0;\n}\n\n.rc-pagination-item {\n  background-color: unset;\n}\n.rc-pagination-item-active {\n  background-color: #2db7f5;\n}\n\na:focus,\na:hover {\n  color: white;\n}\n\n#search-form {\n  display: table-cell;\n  vertical-align: top;\n  text-align: left;\n}\n\n#pagination-search {\n  display: inline-table;\n  width: 100%;\n  background: #f4f6f8;\n  padding: 20px;\n  border: 1px solid lightgrey;\n}\n#pagination {\n  float: right;\n}\n#pagination label {\n  padding-left: 20px;\n  vertical-align: middle;\n  display: table-cell;\n}\n\n.description {\n  margin-top: 20px;\n}\n\n.book-fields {\n  padding: 20px;\n}\n", ""]);
 
 	// exports
 

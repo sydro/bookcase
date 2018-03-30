@@ -217,6 +217,39 @@ router.put("/user", mid.loggedIn, (req, res, next) => {
   }
 });
 
+router.put("/book", mid.loggedIn, (req, res, next) => {
+  let book = JSON.parse(decodeURIComponent(req.body.book));
+  if (book) {
+    Book.findOneAndUpdate(
+      { isbn: book.isbn },
+      {
+        title: book.title,
+        authors: book.authors,
+        isbn: book.isbn,
+        pages: book.pages,
+        description: book.description
+      },
+      { safe: true, strict: true, new: true }
+    ).exec((error, book) => {
+      if (error) {
+        return next(error);
+      } else if (!book) {
+        let error = new Error("No matching book");
+        error.status = 404;
+        return next(error);
+      } else {
+        res.status(200).send({
+          book: book
+        });
+      }
+    });
+  } else {
+    let error = new Error("Isbn is required");
+    error.status = 400;
+    return next(error);
+  }
+});
+
 router.put("/books", mid.loggedIn, (req, res, next) => {
   try {
     var books = JSON.parse(decodeURIComponent(req.body.books));
