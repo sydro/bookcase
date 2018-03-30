@@ -41613,8 +41613,9 @@
 
 	  _createClass(SearchForm, [{
 	    key: "handleSearch",
-	    value: function handleSearch() {
+	    value: function handleSearch(event) {
 	      this.props.onSubmit(this.inputNode.value);
+	      event.preventDefault();
 	    }
 	  }, {
 	    key: "handleReset",
@@ -41632,7 +41633,7 @@
 	        { id: "search-form" },
 	        React.createElement(
 	          _reactBootstrap.Form,
-	          { inline: true },
+	          { inline: true, onSubmit: this.handleSearch },
 	          React.createElement(
 	            _reactBootstrap.FormGroup,
 	            { controlId: "formInlineName" },

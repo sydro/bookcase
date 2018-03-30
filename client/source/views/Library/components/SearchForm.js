@@ -16,8 +16,9 @@ class SearchForm extends React.Component {
     this.handleReset = this.handleReset.bind(this);
   }
 
-  handleSearch() {
+  handleSearch(event) {
     this.props.onSubmit(this.inputNode.value);
+    event.preventDefault();
   }
 
   handleReset() {
@@ -28,7 +29,7 @@ class SearchForm extends React.Component {
   render() {
     return (
       <div id="search-form">
-        <Form inline>
+        <Form inline onSubmit={this.handleSearch}>
           <FormGroup controlId="formInlineName">
             <ControlLabel>title</ControlLabel>{" "}
             <FormControl
