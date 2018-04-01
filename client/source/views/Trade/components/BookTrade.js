@@ -50,9 +50,13 @@ class BookTrade extends React.Component {
   render() {
     const book = this.props.book;
     const active = this.props.active;
-    const auth = this.props.auth;
 
     if (book) {
+      const buttons = (typeof book.isbn == "undefined") ? null :
+      <div>
+        { this.props.editInfo ? (<button className="save-button" onClick={this.onSave}>Save</button>) : (<button className="button-custom" onClick={this.onEdit}>Edit</button>) }
+        <button className="button-custom" onClick={this.onDelete}>Delete</button>
+      </div>
       return (
         <div className="trade-all">
           <div className="trade-info">
@@ -66,8 +70,7 @@ class BookTrade extends React.Component {
               </div>
               { /* active ? null : <button className="propose-button" onClick={ this.onProposeTrade }>Propose Trade</button> */}
               <button className="back-button" onClick={ browserHistory.goBack }>Back</button><br />
-              { this.props.editInfo ? (<button className="save-button" onClick={this.onSave}>Save</button>) : (<button className="button-custom" onClick={this.onEdit}>Edit</button>) }
-              { auth ? null : <button className="button-custom" onClick={this.onDelete}>Delete</button>}
+              { buttons }
               <ErrorMessage errors={ this.props.errors } />
               <SuccessMessage success={ this.props.success } />
             </div>

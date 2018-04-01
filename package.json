@@ -5,7 +5,7 @@
   "main": "server/server.js",
   "scripts": {
     "test": "mocha --compilers js:babel-core/register --recursive",
-    "start": "npm run build && node server/server.js",
+    "start": "npm run build && nodemon server/server.js",
     "dev-start": "webpack-dev-server",
     "watch": "webpack --progress --colors --watch",
     "build": "webpack"
@@ -22,12 +22,14 @@
     "jsonwebtoken": "^7.1.9",
     "mongodb": "^2.2.11",
     "mongoose": "^4.6.5",
+    "nodemon": "^1.17.3",
     "quagga": "^0.12.1",
     "rc-pagination": "^1.16.2",
     "react": "^15.3.2",
     "react-bootstrap": "^0.32.1",
     "react-dom": "^15.3.2",
-    "react-router": "^3.0.0"
+    "react-router": "^3.0.0",
+    "xml2js": "^0.4.19"
   },
   "devDependencies": {
     "babel-core": "^6.18.0",

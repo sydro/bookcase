@@ -6,6 +6,7 @@ import { browserHistory } from "react-router";
 import SearchForm from "./components/SearchForm";
 import SearchResults from "./components/SearchResults";
 import google from "../../images/google-dev.svg";
+import goodreads from "../../images/goodreads_logo.svg";
 import SuccessMessage from "./components/SuccessMessage";
 import ErrorMessage from "./components/ErrorMessage";
 
@@ -14,8 +15,29 @@ class Search extends React.Component {
     super();
     this.state = { books: [], success: [], errors: [] };
     this.handleBookRequest = this.handleBookRequest.bind(this);
+    this.handleBookRequestFallback = this.handleBookRequestFallback.bind(this);
     this.handleAddBook = this.handleAddBook.bind(this);
     this.handleCloseDetails = this.handleCloseDetails.bind(this);
+  }
+  handleBookRequestFallback(value) {
+    if (!value.length) {
+      return;
+    }
+    fetch("/api/search2", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      credentials: "same-origin",
+      body: `search=${value}`
+    })
+      .then(response => response.json())
+      .then(json => {
+        if (json.length != 0) {
+          this.setState({ books: json });
+        }
+      });
   }
   handleBookRequest(value) {
     if (!value.length) {
@@ -32,7 +54,11 @@ class Search extends React.Component {
     })
       .then(response => response.json())
       .then(json => {
-        this.setState({ books: json });
+        if (json.length != 0) {
+          this.setState({ books: json });
+        } else {
+          this.handleBookRequestFallback(value);
+        }
       });
   }
   handleAddBook(index) {
@@ -86,7 +112,8 @@ class Search extends React.Component {
         />
         <p className="data-label">
           Data provided by <span dangerouslySetInnerHTML={{ __html: google }} />{" "}
-          Google Books API
+          Google Books API and{" "}
+          <span dangerouslySetInnerHTML={{ __html: goodreads }} /> GoodReads API
         </p>
       </div>
     );
