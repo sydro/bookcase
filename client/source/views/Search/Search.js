@@ -9,11 +9,12 @@ import google from "../../images/google-dev.svg";
 import goodreads from "../../images/goodreads_logo.svg";
 import SuccessMessage from "./components/SuccessMessage";
 import ErrorMessage from "./components/ErrorMessage";
+import Loader from "./components/LoaderAnimation";
 
 class Search extends React.Component {
   constructor() {
     super();
-    this.state = { books: [], success: [], errors: [] };
+    this.state = { books: [], success: [], errors: [], loader: false };
     this.handleBookRequest = this.handleBookRequest.bind(this);
     this.handleBookRequestFallback = this.handleBookRequestFallback.bind(this);
     this.handleAddBook = this.handleAddBook.bind(this);
@@ -35,7 +36,13 @@ class Search extends React.Component {
       .then(response => response.json())
       .then(json => {
         if (json.length != 0) {
-          this.setState({ books: json });
+          this.setState({ books: json, errors: [], loader: false });
+        } else {
+          this.setState({
+            books: [],
+            errors: ["Nessun libro trovato"],
+            loader: false
+          });
         }
       });
   }
@@ -43,6 +50,7 @@ class Search extends React.Component {
     if (!value.length) {
       return;
     }
+    this.setState({ books: [], loader: true, errors: [] });
     fetch("/api/search", {
       method: "POST",
       headers: {
@@ -55,7 +63,7 @@ class Search extends React.Component {
       .then(response => response.json())
       .then(json => {
         if (json.length != 0) {
-          this.setState({ books: json });
+          this.setState({ books: json, errors: [], loader: false });
         } else {
           this.handleBookRequestFallback(value);
         }
@@ -105,6 +113,7 @@ class Search extends React.Component {
         />
         <SuccessMessage success={this.state.success} />
         <ErrorMessage errors={this.state.errors} />
+        <Loader loader={this.state.loader} />
         <SearchResults
           books={this.state.books}
           onAddBook={this.handleAddBook}
