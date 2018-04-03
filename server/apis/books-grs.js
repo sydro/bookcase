@@ -34,19 +34,16 @@ module.exports = {
               jsonData = result.GoodreadsResponse.search;
             });
           } catch (error) {
-            console.log(error);
             reject(error);
           }
           if (response.statusCode === 200) {
             resolve(jsonData);
           } else {
-            console.log(jsonData);
             reject(jsonData);
           }
         });
       });
       request.on("error", error => {
-        console.log(error);
         reject(error);
       });
       request.end();

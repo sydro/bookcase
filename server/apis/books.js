@@ -26,19 +26,16 @@ module.exports = {
           try {
             var jsonData = JSON.parse(string);
           } catch (error) {
-            console.log(error);
             reject(error);
           }
           if (response.statusCode === 200) {
             resolve(jsonData);
           } else {
-            console.log(jsonData);
             reject(jsonData);
           }
         });
       });
       request.on("error", error => {
-        console.log(error);
         reject(error);
       });
       request.end();
