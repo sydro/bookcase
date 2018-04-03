@@ -38003,6 +38003,7 @@
 	    key: "handleSubmit",
 	    value: function handleSubmit(event) {
 	      this.props.onChange(this.state.value.trim());
+	      event.preventDefault();
 	    }
 	  }, {
 	    key: "render",
@@ -38013,24 +38014,28 @@
 	      return React.createElement(
 	        "div",
 	        { className: "form-container" },
-	        React.createElement("input", {
-	          className: "form-input",
-	          type: "text",
-	          value: this.state.value,
-	          onChange: this.handleChange
-	        }),
 	        React.createElement(
-	          "button",
-	          { className: "form-button", onClick: this.handleSubmit },
-	          "Find Book"
-	        ),
-	        React.createElement(
-	          "button",
-	          { className: "form-button", onClick: this.handleBarcodeRead },
+	          "form",
+	          { onSubmit: this.handleSubmit },
+	          React.createElement("input", {
+	            className: "form-input",
+	            type: "text",
+	            value: this.state.value,
+	            onChange: this.handleChange
+	          }),
 	          React.createElement(
-	            _reactRouter.Link,
-	            { to: "/barcode" },
-	            React.createElement("span", { dangerouslySetInnerHTML: { __html: _barcode2.default } })
+	            "button",
+	            { className: "form-button", onClick: this.handleSubmit },
+	            "Find Book"
+	          ),
+	          React.createElement(
+	            "button",
+	            { className: "form-button", onClick: this.handleBarcodeRead },
+	            React.createElement(
+	              _reactRouter.Link,
+	              { to: "/barcode" },
+	              React.createElement("span", { dangerouslySetInnerHTML: { __html: _barcode2.default } })
+	            )
 	          )
 	        )
 	      );

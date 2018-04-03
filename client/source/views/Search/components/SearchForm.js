@@ -17,6 +17,7 @@ class SearchForm extends React.Component {
   }
   handleSubmit(event) {
     this.props.onChange(this.state.value.trim());
+    event.preventDefault();
   }
 
   render() {
@@ -25,20 +26,22 @@ class SearchForm extends React.Component {
     }
     return (
       <div className="form-container">
-        <input
-          className="form-input"
-          type="text"
-          value={this.state.value}
-          onChange={this.handleChange}
-        />
-        <button className="form-button" onClick={this.handleSubmit}>
-          Find Book
-        </button>
-        <button className="form-button" onClick={this.handleBarcodeRead}>
-          <Link to="/barcode">
-            <span dangerouslySetInnerHTML={{ __html: barcode }} />
-          </Link>
-        </button>
+        <form onSubmit={this.handleSubmit}>
+          <input
+            className="form-input"
+            type="text"
+            value={this.state.value}
+            onChange={this.handleChange}
+          />
+          <button className="form-button" onClick={this.handleSubmit}>
+            Find Book
+          </button>
+          <button className="form-button" onClick={this.handleBarcodeRead}>
+            <Link to="/barcode">
+              <span dangerouslySetInnerHTML={{ __html: barcode }} />
+            </Link>
+          </button>
+        </form>
       </div>
     );
   }
