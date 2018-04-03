@@ -3,7 +3,7 @@
 import * as React from "react";
 import fetch from "isomorphic-fetch";
 import barcode from "../../../images/barcode.svg";
-import { Link } from "react-router";
+import { browserHistory } from "react-router";
 
 class SearchForm extends React.Component {
   constructor(props) {
@@ -11,6 +11,7 @@ class SearchForm extends React.Component {
     this.state = { value: "" };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleBarcode = this.handleBarcode.bind(this);
   }
   handleChange(event) {
     this.setState({ value: event.target.value });
@@ -18,6 +19,9 @@ class SearchForm extends React.Component {
   handleSubmit(event) {
     this.props.onChange(this.state.value.trim());
     event.preventDefault();
+  }
+  handleBarcode(event) {
+    browserHistory.push("/barcode");
   }
 
   render() {
@@ -36,10 +40,8 @@ class SearchForm extends React.Component {
           <button className="form-button" onClick={this.handleSubmit}>
             Find Book
           </button>
-          <button className="form-button" onClick={this.handleBarcodeRead}>
-            <Link to="/barcode">
-              <span dangerouslySetInnerHTML={{ __html: barcode }} />
-            </Link>
+          <button className="form-button" onClick={this.handleBarcode}>
+            <span dangerouslySetInnerHTML={{ __html: barcode }} />
           </button>
         </form>
       </div>

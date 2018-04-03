@@ -37991,6 +37991,7 @@
 	    _this.state = { value: "" };
 	    _this.handleChange = _this.handleChange.bind(_this);
 	    _this.handleSubmit = _this.handleSubmit.bind(_this);
+	    _this.handleBarcode = _this.handleBarcode.bind(_this);
 	    return _this;
 	  }
 
@@ -38004,6 +38005,11 @@
 	    value: function handleSubmit(event) {
 	      this.props.onChange(this.state.value.trim());
 	      event.preventDefault();
+	    }
+	  }, {
+	    key: "handleBarcode",
+	    value: function handleBarcode(event) {
+	      _reactRouter.browserHistory.push("/barcode");
 	    }
 	  }, {
 	    key: "render",
@@ -38030,12 +38036,8 @@
 	          ),
 	          React.createElement(
 	            "button",
-	            { className: "form-button", onClick: this.handleBarcodeRead },
-	            React.createElement(
-	              _reactRouter.Link,
-	              { to: "/barcode" },
-	              React.createElement("span", { dangerouslySetInnerHTML: { __html: _barcode2.default } })
-	            )
+	            { className: "form-button", onClick: this.handleBarcode },
+	            React.createElement("span", { dangerouslySetInnerHTML: { __html: _barcode2.default } })
 	          )
 	        )
 	      );
