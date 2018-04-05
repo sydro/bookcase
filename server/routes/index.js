@@ -48,7 +48,7 @@ router.post("/login", mid.loggedOut, (req, res, next) => {
       jwt.sign(
         { username: user.username, id: user._id },
         process.env.JWT_SECRET,
-        { algorithm: "HS256", expiresIn: "1d" },
+        { algorithm: "HS256", expiresIn: "1m" },
         (error, token) => {
           if (error) {
             return next(error);
@@ -139,7 +139,7 @@ router.post("/search2", (req, res, next) => {
     .then(value => {
       let books = [];
       if (typeof value.results != "undefined") {
-        console.log(value)
+        console.log(value);
         books = transform2(value);
       }
       res.status(200).send(books);
@@ -148,7 +148,6 @@ router.post("/search2", (req, res, next) => {
       return next(reason);
     });
 });
-
 
 router.post("/library", mid.loggedIn, (req, res, next) => {
   try {
@@ -269,24 +268,22 @@ router.put("/book", mid.loggedIn, (req, res, next) => {
   }
 });
 
-router.delete("/book",  (req, res, next) => {
+router.delete("/book", (req, res, next) => {
   let isbn = req.body.isbn;
   if (isbn) {
-    Book.findOneAndRemove(
-      { isbn: isbn }
-    ).exec((error, book) => {
-        if (error) {
-          return next(error);
-        } else if (!book) {
-          let error = new Error("No matching book");
-          error.status = 404;
-          return next(error);
-        } else {
-          res.status(200).send({
-            success: "Book wih isbn: " + isbn + " removed!"
-          });
-        }
-      });
+    Book.findOneAndRemove({ isbn: isbn }).exec((error, book) => {
+      if (error) {
+        return next(error);
+      } else if (!book) {
+        let error = new Error("No matching book");
+        error.status = 404;
+        return next(error);
+      } else {
+        res.status(200).send({
+          success: "Book wih isbn: " + isbn + " removed!"
+        });
+      }
+    });
   } else {
     let error = new Error("Isbn is required");
     error.status = 400;

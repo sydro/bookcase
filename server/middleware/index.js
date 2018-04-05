@@ -3,7 +3,6 @@
 const jwt = require("jsonwebtoken");
 
 module.exports = {
-
   loggedOut: function(req, res, next) {
     if (req.decoded) {
       res.redirect("/");
@@ -15,6 +14,9 @@ module.exports = {
     if (token) {
       jwt.verify(token, process.env.JWT_SECRET, (error, decoded) => {
         if (error) {
+          if (error.name == "TokenExpiredError") {
+            error.message = "You must login in to continue! Session expired!";
+          }
           return next(error);
         }
         req.decoded = decoded;
@@ -29,4 +31,4 @@ module.exports = {
   getCookies: function(req, res, next) {
     // console.log(req.cookies, req.session);
   }
-}
+};

@@ -36762,7 +36762,7 @@
 	          React.createElement(
 	            _reactRouter.Link,
 	            { className: "header-button-right", to: "/login" },
-	            "Sign In"
+	            "Login"
 	          )
 	        );
 	      }

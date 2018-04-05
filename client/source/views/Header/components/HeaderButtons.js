@@ -31,7 +31,7 @@ class HeaderButtons extends React.Component {
             Sign Up
           </Link>
           <Link className="header-button-right" to="/login">
-            Sign In
+            Login
           </Link>
         </div>
       );
