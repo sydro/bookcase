@@ -58,7 +58,11 @@
 
 	var _reactRouter = __webpack_require__(510);
 
-	var _App = __webpack_require__(568);
+	var _isomorphicFetch = __webpack_require__(568);
+
+	var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
+
+	var _App = __webpack_require__(570);
 
 	var _App2 = _interopRequireDefault(_App);
 
@@ -99,6 +103,49 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	// function refreshToken() {
+	//   console.log("test");
+	//   fetch("/api/token/refresh", {
+	//     method: "POST",
+	//     headers: {
+	//       Accept: "application/json",
+	//       "Content-Type": "application/x-www-form-urlencoded",
+	//       "X-Access-Token": localStorage.token
+	//     },
+	//     credentials: "same-origin",
+	//     body: `username=${localStorage.username}&user_id=${localStorage.userid}`
+	//   })
+	//     .then(response => response.json())
+	//     .then(json => {
+	//       if (json.error) {
+	//       } else {
+	//         localStorage.token = json.token;
+	//       }
+	//     });
+	// }
+	//
+	// function onChangeRefreshToken() {
+	//   fetch("/api/token/verify", {
+	//     method: "GET",
+	//     headers: {
+	//       Accept: "application/json",
+	//       "Content-Type": "application/x-www-form-urlencoded",
+	//       "X-Access-Token": localStorage.token
+	//     },
+	//     credentials: "same-origin"
+	//   })
+	//     .then(response => response.json())
+	//     .then(json => {
+	//       if (json.error) {
+	//         refreshToken();
+	//       } else {
+	//         if (json.exp <= (new Date().getTime() / 1000 + "").split(".")[0] - 60) {
+	//           refreshToken();
+	//         }
+	//       }
+	//     });
+	// }
 
 	ReactDOM.render(React.createElement(
 	  _reactRouter.Router,
@@ -35995,129 +36042,16 @@
 /* 568 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(327);
-
-	var React = _interopRequireWildcard(_react);
-
-	var _isomorphicFetch = __webpack_require__(569);
-
-	var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
-
-	var _Header = __webpack_require__(571);
-
-	var _Header2 = _interopRequireDefault(_Header);
-
-	var _Footer = __webpack_require__(574);
-
-	var _Footer2 = _interopRequireDefault(_Footer);
-
-	var _reactRouter = __webpack_require__(510);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var App = function (_React$Component) {
-	  _inherits(App, _React$Component);
-
-	  function App() {
-	    _classCallCheck(this, App);
-
-	    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
-
-	    _this.state = { token: "", auth: false };
-	    _this.componentWillMount = _this.componentWillMount.bind(_this);
-	    _this.updateAuth = _this.updateAuth.bind(_this);
-	    _this.resetAuth = _this.resetAuth.bind(_this);
-	    return _this;
-	  }
-
-	  _createClass(App, [{
-	    key: "componentWillMount",
-	    value: function componentWillMount() {
-	      if (localStorage.token) {
-	        this.setState({ token: localStorage.token, auth: true });
-	      }
-	    }
-	  }, {
-	    key: "updateAuth",
-	    value: function updateAuth(token) {
-	      localStorage.token = token;
-	      this.setState({ token: token, auth: true });
-	    }
-	  }, {
-	    key: "resetAuth",
-	    value: function resetAuth() {
-	      (0, _isomorphicFetch2.default)("/api/logout", {
-	        method: "GET",
-	        headers: {
-	          "Accept": "application/json",
-	          "Content-Type": "application/x-www-form-urlencoded",
-	          "X-Access-Token": localStorage.token
-	        },
-	        credentials: "same-origin"
-	      }).then(function (response) {
-	        return response.json();
-	      }).then(function (json) {
-	        if (json.error) {} else {
-	          localStorage.clear();
-	          _reactRouter.browserHistory.push("/");
-	        }
-	      });
-	      this.setState({ token: "", auth: false });
-	    }
-	  }, {
-	    key: "render",
-	    value: function render() {
-	      return React.createElement(
-	        "div",
-	        { className: "main-container" },
-	        React.createElement(_Header2.default, { auth: this.state.auth, path: this.props.location.pathname, onLogout: this.resetAuth }),
-	        React.createElement(
-	          "div",
-	          { className: "main-body" },
-	          this.props.children && React.cloneElement(this.props.children, {
-	            onAuth: this.updateAuth
-	          })
-	        ),
-	        React.createElement(_Footer2.default, null)
-	      );
-	    }
-	  }]);
-
-	  return App;
-	}(React.Component);
-
-	exports.default = App;
-
-/***/ }),
-/* 569 */
-/***/ (function(module, exports, __webpack_require__) {
-
 	// the whatwg-fetch polyfill installs the fetch() function
 	// on the global object (window or self)
 	//
 	// Return that as the export for use in Webpack, Browserify etc.
-	__webpack_require__(570);
+	__webpack_require__(569);
 	module.exports = self.fetch.bind(self);
 
 
 /***/ }),
-/* 570 */
+/* 569 */
 /***/ (function(module, exports) {
 
 	(function(self) {
@@ -36584,6 +36518,135 @@
 
 
 /***/ }),
+/* 570 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(327);
+
+	var React = _interopRequireWildcard(_react);
+
+	var _isomorphicFetch = __webpack_require__(568);
+
+	var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
+
+	var _Header = __webpack_require__(571);
+
+	var _Header2 = _interopRequireDefault(_Header);
+
+	var _Footer = __webpack_require__(574);
+
+	var _Footer2 = _interopRequireDefault(_Footer);
+
+	var _reactRouter = __webpack_require__(510);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var App = function (_React$Component) {
+	  _inherits(App, _React$Component);
+
+	  function App() {
+	    _classCallCheck(this, App);
+
+	    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
+
+	    _this.state = { token: "", auth: false, username: "", userid: "" };
+	    _this.componentWillMount = _this.componentWillMount.bind(_this);
+	    _this.updateAuth = _this.updateAuth.bind(_this);
+	    _this.resetAuth = _this.resetAuth.bind(_this);
+	    return _this;
+	  }
+
+	  _createClass(App, [{
+	    key: "componentWillMount",
+	    value: function componentWillMount() {
+	      if (localStorage.token) {
+	        this.setState({
+	          token: localStorage.token,
+	          auth: true,
+	          username: localStorage.username,
+	          userid: localStorage.userid
+	        });
+	      }
+	    }
+	  }, {
+	    key: "updateAuth",
+	    value: function updateAuth(authentication) {
+	      localStorage.token = authentication.token;
+	      localStorage.username = authentication.username;
+	      localStorage.userid = authentication.userid;
+	      this.setState({
+	        token: authentication.token,
+	        auth: true,
+	        username: authentication.username,
+	        userid: authentication.id
+	      });
+	    }
+	  }, {
+	    key: "resetAuth",
+	    value: function resetAuth() {
+	      (0, _isomorphicFetch2.default)("/api/logout", {
+	        method: "GET",
+	        headers: {
+	          Accept: "application/json",
+	          "Content-Type": "application/x-www-form-urlencoded",
+	          "X-Access-Token": localStorage.token
+	        },
+	        credentials: "same-origin"
+	      }).then(function (response) {
+	        return response.json();
+	      }).then(function (json) {
+	        if (json.error) {} else {
+	          localStorage.clear();
+	          _reactRouter.browserHistory.push("/");
+	        }
+	      });
+	      this.setState({ token: "", auth: false, username: "", userid: "" });
+	    }
+	  }, {
+	    key: "render",
+	    value: function render() {
+	      return React.createElement(
+	        "div",
+	        { className: "main-container" },
+	        React.createElement(_Header2.default, {
+	          auth: this.state.auth,
+	          path: this.props.location.pathname,
+	          onLogout: this.resetAuth
+	        }),
+	        React.createElement(
+	          "div",
+	          { className: "main-body" },
+	          this.props.children && React.cloneElement(this.props.children, {
+	            onAuth: this.updateAuth
+	          })
+	        ),
+	        React.createElement(_Footer2.default, null)
+	      );
+	    }
+	  }]);
+
+	  return App;
+	}(React.Component);
+
+	exports.default = App;
+
+/***/ }),
 /* 571 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -36988,7 +37051,7 @@
 
 	var React = _interopRequireWildcard(_react);
 
-	var _isomorphicFetch = __webpack_require__(569);
+	var _isomorphicFetch = __webpack_require__(568);
 
 	var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
 
@@ -37392,7 +37455,7 @@
 
 	var React = _interopRequireWildcard(_react);
 
-	var _isomorphicFetch = __webpack_require__(569);
+	var _isomorphicFetch = __webpack_require__(568);
 
 	var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
 
@@ -37454,7 +37517,7 @@
 	      (0, _isomorphicFetch2.default)("/api/login", {
 	        method: "POST",
 	        headers: {
-	          "Accept": "application/json",
+	          Accept: "application/json",
 	          "Content-Type": "application/x-www-form-urlencoded"
 	        },
 	        credentials: "same-origin",
@@ -37463,10 +37526,15 @@
 	        return response.json();
 	      }).then(function (json) {
 	        if (json.token) {
-	          _this2.props.onAuth(json.token);
+	          _this2.props.onAuth(json);
 	          _reactRouter.browserHistory.push("/browse");
 	        } else {
-	          _this2.setState({ email: "", password: "", errors: json.error || [], success: json.success || [] });
+	          _this2.setState({
+	            email: "",
+	            password: "",
+	            errors: json.error || [],
+	            success: json.success || []
+	          });
 	        }
 	      });
 	    }
@@ -37492,7 +37560,8 @@
 	          onPasswordChange: this.handlePasswordChange,
 	          onError: this.handleError,
 	          email: this.state.email,
-	          password: this.state.password }),
+	          password: this.state.password
+	        }),
 	        React.createElement(_ErrorMessage2.default, { errors: this.state.errors }),
 	        React.createElement(_SuccessMessage2.default, { success: this.state.success })
 	      );
@@ -37747,7 +37816,7 @@
 
 	var React = _interopRequireWildcard(_react);
 
-	var _isomorphicFetch = __webpack_require__(569);
+	var _isomorphicFetch = __webpack_require__(568);
 
 	var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
 
@@ -37960,7 +38029,7 @@
 
 	var React = _interopRequireWildcard(_react);
 
-	var _isomorphicFetch = __webpack_require__(569);
+	var _isomorphicFetch = __webpack_require__(568);
 
 	var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
 
@@ -38494,7 +38563,7 @@
 
 	var React = _interopRequireWildcard(_react);
 
-	var _isomorphicFetch = __webpack_require__(569);
+	var _isomorphicFetch = __webpack_require__(568);
 
 	var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
 
@@ -61291,7 +61360,7 @@
 
 	var React = _interopRequireWildcard(_react);
 
-	var _isomorphicFetch = __webpack_require__(569);
+	var _isomorphicFetch = __webpack_require__(568);
 
 	var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
 
@@ -63141,7 +63210,7 @@
 
 	var React = _interopRequireWildcard(_react);
 
-	var _isomorphicFetch = __webpack_require__(569);
+	var _isomorphicFetch = __webpack_require__(568);
 
 	var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
 

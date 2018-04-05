@@ -10,7 +10,7 @@ import SuccessMessage from "./components/SuccessMessage";
 class Login extends React.Component {
   constructor() {
     super();
-    this.state = { email: "", password: "", errors: [], success: [] }
+    this.state = { email: "", password: "", errors: [], success: [] };
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
@@ -26,18 +26,24 @@ class Login extends React.Component {
     fetch("/api/login", {
       method: "POST",
       headers: {
-        "Accept": "application/json",
+        Accept: "application/json",
         "Content-Type": "application/x-www-form-urlencoded"
       },
       credentials: "same-origin",
-      body: `email=${ this.state.email }&password=${ this.state.password }`
-    }).then((response) => response.json())
-      .then((json) => {
+      body: `email=${this.state.email}&password=${this.state.password}`
+    })
+      .then(response => response.json())
+      .then(json => {
         if (json.token) {
-          this.props.onAuth(json.token);
+          this.props.onAuth(json);
           browserHistory.push("/browse");
         } else {
-          this.setState({ email: "", password: "", errors: json.error || [], success: json.success || [] });
+          this.setState({
+            email: "",
+            password: "",
+            errors: json.error || [],
+            success: json.success || []
+          });
         }
       });
   }
@@ -49,17 +55,18 @@ class Login extends React.Component {
       <div className="login-container">
         <h1>Sign In</h1>
         <LoginForm
-        onSubmit={ this.handleLogin }
-        onEmailChange={ this.handleEmailChange }
-        onPasswordChange={ this.handlePasswordChange }
-        onError={ this.handleError }
-        email={ this.state.email }
-        password={ this.state.password } />
-        <ErrorMessage errors={ this.state.errors } />
-        <SuccessMessage success={ this.state.success } />
+          onSubmit={this.handleLogin}
+          onEmailChange={this.handleEmailChange}
+          onPasswordChange={this.handlePasswordChange}
+          onError={this.handleError}
+          email={this.state.email}
+          password={this.state.password}
+        />
+        <ErrorMessage errors={this.state.errors} />
+        <SuccessMessage success={this.state.success} />
       </div>
     );
   }
 }
 
-export default Login
+export default Login;

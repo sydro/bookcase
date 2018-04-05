@@ -40,6 +40,30 @@ router.post("/register", mid.loggedOut, (req, res, next) => {
   });
 });
 
+router.get("/token/verify", mid.loggedIn, (req, res, next) => {
+  res.send(req.decoded);
+});
+
+router.post("/token/refresh", (req, res, next) => {
+  jwt.sign(
+    { username: req.body.username, id: req.body.userid },
+    process.env.JWT_SECRET,
+    { algorithm: "HS256", expiresIn: "2d" },
+    (error, token) => {
+      if (error) {
+        return next(error);
+      }
+      res.status(200).send({
+        success: ["Success, you're logged in!"],
+        token: token,
+        authenticated: true,
+        username: user.username,
+        id: user._id
+      });
+    }
+  );
+});
+
 router.post("/login", mid.loggedOut, (req, res, next) => {
   User.authenticate(req.body.email, req.body.password, (error, user) => {
     if (error || !user) {
@@ -48,7 +72,7 @@ router.post("/login", mid.loggedOut, (req, res, next) => {
       jwt.sign(
         { username: user.username, id: user._id },
         process.env.JWT_SECRET,
-        { algorithm: "HS256", expiresIn: "1m" },
+        { algorithm: "HS256", expiresIn: "2d" },
         (error, token) => {
           if (error) {
             return next(error);
@@ -56,7 +80,9 @@ router.post("/login", mid.loggedOut, (req, res, next) => {
           res.status(200).send({
             success: ["Success, you're logged in!"],
             token: token,
-            authenticated: true
+            authenticated: true,
+            username: user.username,
+            id: user._id
           });
         }
       );
