@@ -10,6 +10,7 @@ import goodreads from "../../images/goodreads_logo.svg";
 import SuccessMessage from "./components/SuccessMessage";
 import ErrorMessage from "./components/ErrorMessage";
 import Loader from "./components/LoaderAnimation";
+import { Grid, Row, Col } from "react-bootstrap";
 
 class Search extends React.Component {
   constructor() {
@@ -106,24 +107,53 @@ class Search extends React.Component {
     }
     return (
       <div className="account-container">
-        <h1>Add Books to Library</h1>
-        <SearchForm
-          onChange={this.handleBookRequest}
-          searchValue={searchValue}
-        />
-        <SuccessMessage success={this.state.success} />
-        <ErrorMessage errors={this.state.errors} />
-        <Loader loader={this.state.loader} />
-        <SearchResults
-          books={this.state.books}
-          onAddBook={this.handleAddBook}
-          onCloseDetails={this.handleCloseDetails}
-        />
-        <p className="data-label">
-          Data provided by <span dangerouslySetInnerHTML={{ __html: google }} />{" "}
-          Google Books API and{" "}
-          <span dangerouslySetInnerHTML={{ __html: goodreads }} /> GoodReads API
-        </p>
+        <Grid>
+          <Row className="middle">
+            <Col xs={12} md={12}>
+              <h1>Add Books to Library</h1>
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={12} md={12}>
+              <SearchForm
+                onChange={this.handleBookRequest}
+                searchValue={searchValue}
+              />{" "}
+            </Col>
+          </Row>
+          <Row className="middle">
+            <Col xs={12} md={12}>
+              <SuccessMessage success={this.state.success} />
+              <ErrorMessage errors={this.state.errors} />
+              <Loader loader={this.state.loader} />
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={12} md={12}>
+              <SearchResults
+                books={this.state.books}
+                onAddBook={this.handleAddBook}
+                onCloseDetails={this.handleCloseDetails}
+              />
+            </Col>
+          </Row>
+          <Row className="spacer-bottom">
+            <Col xs={12} md={12}>
+              {" "}
+            </Col>
+          </Row>
+          <Row className="middle">
+            <Col xs={12} md={12}>
+              <p className="data-label">
+                Data provided by{" "}
+                <span dangerouslySetInnerHTML={{ __html: google }} /> Google
+                Books API and{" "}
+                <span dangerouslySetInnerHTML={{ __html: goodreads }} />{" "}
+                GoodReads API
+              </p>
+            </Col>
+          </Row>
+        </Grid>
       </div>
     );
   }

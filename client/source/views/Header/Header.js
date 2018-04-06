@@ -2,6 +2,7 @@
 var Config = require("Config");
 import * as React from "react";
 import { Link, browserHistory } from "react-router";
+import { Navbar, Nav, NavItem } from "react-bootstrap";
 import HeaderButtons from "./components/HeaderButtons";
 
 class Header extends React.Component {
@@ -14,33 +15,37 @@ class Header extends React.Component {
   }
   render() {
     return (
-      <header>
-        <div
-          className={`${"header-container"} ${
-            this.props.path === "/" ? "header-home" : "header-route"
-          }`}
-        >
-          <div className="header-left">
-            <h1 className="header-title">
-              <Link to="/">{Config.title}</Link>
-            </h1>
-            <h3 className="header-text">Share knowledge!</h3>
-          </div>
-          <div className="header-middle">
-            <Link className="header-button-middle" to="/browse">
+      <Navbar collapseOnSelect>
+        <Navbar.Header>
+          <Navbar.Brand>
+            <a href="/">{Config.title}</a>
+          </Navbar.Brand>
+          <Navbar.Toggle />
+        </Navbar.Header>
+        <Navbar.Collapse>
+          <Nav>
+            <NavItem
+              className="header-button-middle"
+              eventKey={1}
+              href="/browse"
+              componentClass={Link}
+              to="/browse"
+            >
               Browse Books
-            </Link>
-            {this.props.auth ? (
-              <Link className="header-button-middle" to="/search">
-                Add Books
-              </Link>
-            ) : (
-              ""
-            )}
-          </div>
+            </NavItem>
+            <NavItem
+              className="header-button-middle"
+              eventKey={2}
+              href="/search"
+              to="/search"
+              componentClass={Link}
+            >
+              Add Book
+            </NavItem>
+          </Nav>
           <HeaderButtons auth={this.props.auth} onLogout={this.onLogout} />
-        </div>
-      </header>
+        </Navbar.Collapse>
+      </Navbar>
     );
   }
 }

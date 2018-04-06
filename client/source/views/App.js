@@ -24,15 +24,11 @@ class App extends React.Component {
       });
     }
   }
-  updateAuth(authentication) {
-    localStorage.token = authentication.token;
-    localStorage.username = authentication.username;
-    localStorage.userid = authentication.userid;
+  updateAuth(token) {
+    localStorage.token = token;
     this.setState({
-      token: authentication.token,
-      auth: true,
-      username: authentication.username,
-      userid: authentication.id
+      token: token,
+      auth: true
     });
   }
   resetAuth() {
@@ -53,7 +49,7 @@ class App extends React.Component {
           browserHistory.push("/");
         }
       });
-    this.setState({ token: "", auth: false, username: "", userid: "" });
+    this.setState({ token: "", auth: false });
   }
 
   render() {

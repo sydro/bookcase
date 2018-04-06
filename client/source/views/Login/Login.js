@@ -35,7 +35,7 @@ class Login extends React.Component {
       .then(response => response.json())
       .then(json => {
         if (json.token) {
-          this.props.onAuth(json);
+          this.props.onAuth(json.token);
           browserHistory.push("/browse");
         } else {
           this.setState({

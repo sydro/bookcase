@@ -4,6 +4,14 @@ import * as React from "react";
 import fetch from "isomorphic-fetch";
 import barcode from "../../../images/barcode.svg";
 import { browserHistory } from "react-router";
+import {
+  Row,
+  Col,
+  FormGroup,
+  FormControl,
+  Button,
+  Glyphicon
+} from "react-bootstrap";
 
 class SearchForm extends React.Component {
   constructor(props) {
@@ -29,22 +37,34 @@ class SearchForm extends React.Component {
       this.state.value = this.props.searchValue;
     }
     return (
-      <div className="form-container">
-        <form onSubmit={this.handleSubmit}>
-          <input
-            className="form-input"
-            type="text"
-            value={this.state.value}
-            onChange={this.handleChange}
-          />
-          <button className="form-button" onClick={this.handleSubmit}>
-            Find Book
-          </button>
-          <button className="form-button" onClick={this.handleBarcode}>
-            <span dangerouslySetInnerHTML={{ __html: barcode }} />
-          </button>
+      <Row>
+        <form>
+          <FormGroup
+            controlId="formBasicText"
+            //validationState={this.getValidationState()}
+          >
+            <Col xs={12} mdOffset={2} md={5}>
+              <FormControl
+                type="text"
+                value={this.state.value}
+                placeholder="Enter text"
+                onChange={this.handleChange}
+              />
+              <FormControl.Feedback />
+            </Col>
+            <Col xs={6} md={2}>
+              <Button className="btn-search" onClick={this.handleSubmit}>
+                Find Book
+              </Button>
+            </Col>
+            <Col xs={6} md={2}>
+              <Button className="btn-search" onClick={this.handleBarcode}>
+                <Glyphicon glyph="barcode" /> Scan Barcode
+              </Button>
+            </Col>
+          </FormGroup>
         </form>
-      </div>
+      </Row>
     );
   }
 }

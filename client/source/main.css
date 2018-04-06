@@ -68,6 +68,10 @@ input[type="button"]:hover {
   opacity: 1;
 }
 
+.container {
+  width: 100%;
+}
+
 .main-container {
   display: flex;
   display: -webkit-flex;
@@ -143,14 +147,25 @@ input[type="button"]:hover {
   margin-right: 1em;
   text-decoration: none;
   background-color: #311b92;
+  margin: 2px;
+  border-radius: 4px;
+}
+
+.header-button-middle > a {
+  color: white !important;
 }
 
 .header-button-right {
   margin-right: 1em;
   text-decoration: none;
   background-color: #ff3d00;
+  margin: 2px;
+  border-radius: 4px;
 }
 
+.header-button-right > a {
+  color: white !important;
+}
 /* Footer */
 
 .footer-container {
@@ -243,6 +258,7 @@ input[type="button"]:hover {
 /* Account View */
 
 .account-container {
+  width: 100%;
   margin: 0 auto;
   display: flex;
   display: -webkit-flex;
@@ -281,10 +297,11 @@ input[type="button"]:hover {
   height: 100px;
 }
 .search-container {
-  width: 64em;
+  width: 100%;
   margin-top: 1em;
   display: flex;
   display: -webkit-flex;
+  margin: auto;
 }
 
 .data-label {
@@ -759,7 +776,7 @@ a:hover {
 }
 
 .loader {
-  margin: 40px;
+  margin: 40px auto;
   border: 16px solid #f3f3f3;
   border-radius: 50%;
   border-top: 16px solid #3498db;
@@ -786,4 +803,35 @@ a:hover {
   100% {
     transform: rotate(360deg);
   }
+}
+
+.btn-search {
+  width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .home-detail {
+    font-size: 12px;
+  }
+  .home-detail > h2 {
+    font-size: 12px;
+  }
+  .home-image > h1 {
+    font-size: 30px;
+  }
+  .footer-container > p {
+    font-size: 11px;
+  }
+  .book-entry {
+    margin: auto !important;
+  }
+}
+
+.middle {
+  text-align: center;
+  padding-top: 20px;
+}
+
+.spacer-bottom {
+  height: 100px;
 }

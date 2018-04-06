@@ -1,6 +1,7 @@
 "use strict";
 
 import * as React from "react";
+import { Alert } from "react-bootstrap";
 
 class ErrorMessage extends React.Component {
   constructor(props) {
@@ -13,7 +14,7 @@ class ErrorMessage extends React.Component {
       ));
     }
     if (messages) {
-      return <div className="error-messages">{messages}</div>;
+      return <Alert bStyle="danger">{messages}</Alert>;
     } else {
       return null;
     }
