@@ -56,7 +56,6 @@ class SearchResults extends React.Component {
     return (
       <div className="search-container">
         <Modal
-          {...this.props}
           show={this.state.showDetail}
           onHide={this.handleHideDetail}
           dialogClassName="custom-modal"

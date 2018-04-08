@@ -14,7 +14,7 @@ class ErrorMessage extends React.Component {
       ));
     }
     if (messages) {
-      return <Alert bStyle="danger">{messages}</Alert>;
+      return <Alert bsStyle="danger">{messages}</Alert>;
     } else {
       return null;
     }

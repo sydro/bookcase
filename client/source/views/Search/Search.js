@@ -92,7 +92,6 @@ class Search extends React.Component {
         } else {
           this.setState({ success: json.success, errors: [] });
         }
-        console.log(this.state);
       });
   }
   handleCloseDetails() {

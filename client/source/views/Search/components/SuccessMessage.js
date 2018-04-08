@@ -14,7 +14,7 @@ class SuccessMessage extends React.Component {
       ));
     }
     if (messages) {
-      return <Alert bStyle="success">{messages}</Alert>;
+      return <Alert bsStyle="success">{messages}</Alert>;
     } else {
       return null;
     }
