@@ -1,6 +1,7 @@
 import * as React from "react";
 import Pagination from "rc-pagination";
 import "rc-pagination/assets/index.css";
+import { Grid, Row, Col, Badge } from "react-bootstrap";
 
 class Pager extends React.Component {
   constructor(props) {
@@ -20,12 +21,20 @@ class Pager extends React.Component {
     if (this.props.books != 0) {
       return (
         <div id="pagination">
-          <Pagination
-            onChange={this.handlePageChange}
-            current={this.state.current}
-            total={this.props.total}
-          />
-          <label>Total Books: {this.props.total}</label>
+          <Row>
+            <Col xs={12} md={8}>
+              <Pagination
+                onChange={this.handlePageChange}
+                current={this.state.current}
+                total={this.props.total}
+              />
+            </Col>
+            <Col xs={12} md={4}>
+              <label>
+                Total Books: <Badge>{this.props.total}</Badge>
+              </label>
+            </Col>
+          </Row>
         </div>
       );
     } else {

@@ -58962,7 +58962,6 @@
 	        } else {
 	          _this4.setState({ success: json.success, errors: [] });
 	        }
-	        console.log(_this4.state);
 	      });
 	    }
 	  }, {
@@ -59228,6 +59227,8 @@
 
 	var _BookDetail2 = _interopRequireDefault(_BookDetail);
 
+	var _reactBootstrap = __webpack_require__(572);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
@@ -59247,10 +59248,11 @@
 	    var _this = _possibleConstructorReturn(this, (SearchResults.__proto__ || Object.getPrototypeOf(SearchResults)).call(this, props));
 
 	    _this.showDetail = _this.showDetail.bind(_this);
-	    _this.state = { book: null, index: null };
+	    _this.state = { book: null, index: null, showDetail: false };
 	    _this.onAddBook = _this.onAddBook.bind(_this);
 	    _this.onCloseDetails = _this.onCloseDetails.bind(_this);
 	    _this.componentWillReceiveProps = _this.componentWillReceiveProps.bind(_this);
+	    _this.handleHideDetail = _this.handleHideDetail.bind(_this);
 	    return _this;
 	  }
 
@@ -59262,17 +59264,28 @@
 	  }, {
 	    key: "showDetail",
 	    value: function showDetail(index, event) {
-	      this.setState({ book: this.props.books[index], index: index });
+	      this.setState({
+	        book: this.props.books[index],
+	        index: index,
+	        showDetail: true
+	      });
 	    }
 	  }, {
 	    key: "onAddBook",
 	    value: function onAddBook() {
 	      this.props.onAddBook(this.state.index);
+	      this.handleHideDetail();
 	    }
 	  }, {
 	    key: "onCloseDetails",
 	    value: function onCloseDetails() {
 	      this.props.onCloseDetails();
+	      this.handleHideDetail();
+	    }
+	  }, {
+	    key: "handleHideDetail",
+	    value: function handleHideDetail() {
+	      this.setState({ showDetail: false });
 	    }
 	  }, {
 	    key: "render",
@@ -59311,11 +59324,41 @@
 	      return React.createElement(
 	        "div",
 	        { className: "search-container" },
-	        React.createElement(_BookDetail2.default, {
-	          book: this.state.book,
-	          onAddBook: this.onAddBook,
-	          onCloseDetails: this.onCloseDetails
-	        }),
+	        React.createElement(
+	          _reactBootstrap.Modal,
+	          {
+	            show: this.state.showDetail,
+	            onHide: this.handleHideDetail,
+	            dialogClassName: "custom-modal"
+	          },
+	          React.createElement(
+	            _reactBootstrap.Modal.Header,
+	            { closeButton: true },
+	            React.createElement(
+	              _reactBootstrap.Modal.Title,
+	              { id: "contained-modal-title-lg" },
+	              "Add Book"
+	            )
+	          ),
+	          React.createElement(
+	            _reactBootstrap.Modal.Body,
+	            null,
+	            React.createElement(_BookDetail2.default, {
+	              book: this.state.book,
+	              onAddBook: this.onAddBook,
+	              onCloseDetails: this.onCloseDetails
+	            })
+	          ),
+	          React.createElement(
+	            _reactBootstrap.Modal.Footer,
+	            null,
+	            React.createElement(
+	              _reactBootstrap.Button,
+	              { onClick: this.handleHideDetail },
+	              "Close"
+	            )
+	          )
+	        ),
 	        React.createElement(
 	          "div",
 	          { className: "search-results" },
@@ -59345,6 +59388,8 @@
 	var _react = __webpack_require__(327);
 
 	var React = _interopRequireWildcard(_react);
+
+	var _reactBootstrap = __webpack_require__(572);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -59416,14 +59461,19 @@
 	            " pages"
 	          ),
 	          React.createElement(
-	            "button",
+	            _reactBootstrap.Button,
 	            { className: "form-button", onClick: this.onAddBook },
 	            "Add to Library"
 	          ),
 	          React.createElement(
-	            "button",
+	            _reactBootstrap.Button,
 	            { className: "form-button", onClick: this.onCloseDetails },
 	            "Cancel"
+	          ),
+	          React.createElement(
+	            "p",
+	            null,
+	            " "
 	          ),
 	          React.createElement(
 	            "p",
@@ -59504,7 +59554,7 @@
 	      if (messages) {
 	        return React.createElement(
 	          _reactBootstrap.Alert,
-	          { bStyle: "success" },
+	          { bsStyle: "success" },
 	          messages
 	        );
 	      } else {
@@ -59568,7 +59618,7 @@
 	      if (messages) {
 	        return React.createElement(
 	          _reactBootstrap.Alert,
-	          { bStyle: "danger" },
+	          { bsStyle: "danger" },
 	          messages
 	        );
 	      } else {
@@ -59667,6 +59717,8 @@
 
 	var _SearchForm2 = _interopRequireDefault(_SearchForm);
 
+	var _reactBootstrap = __webpack_require__(572);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
@@ -59758,20 +59810,60 @@
 	        "div",
 	        { className: "library-container" },
 	        React.createElement(
-	          "h1",
+	          _reactBootstrap.Grid,
 	          null,
-	          "Find a Book"
-	        ),
-	        React.createElement(
-	          "div",
-	          { id: "pagination-search" },
-	          React.createElement(_SearchForm2.default, { onSubmit: this.handleSearch }),
-	          React.createElement(_BooksPager2.default, {
-	            total: this.state.total,
-	            onChangePage: this.handleChangePage
-	          })
-	        ),
-	        React.createElement(_ShowBooks2.default, { books: this.state.books })
+	          React.createElement(
+	            _reactBootstrap.Row,
+	            { className: "middle" },
+	            React.createElement(
+	              _reactBootstrap.Col,
+	              { xs: 12, md: 12 },
+	              React.createElement(
+	                "h1",
+	                null,
+	                "Find a Book"
+	              )
+	            )
+	          ),
+	          React.createElement(
+	            _reactBootstrap.Row,
+	            null,
+	            React.createElement(
+	              _reactBootstrap.Col,
+	              { xs: 10, xsOffset: 1, md: 10, mdOffset: 1 },
+	              React.createElement(
+	                "div",
+	                { id: "pagination-search" },
+	                React.createElement(
+	                  _reactBootstrap.Row,
+	                  null,
+	                  React.createElement(
+	                    _reactBootstrap.Col,
+	                    { xs: 12, md: 5 },
+	                    React.createElement(_SearchForm2.default, { onSubmit: this.handleSearch })
+	                  ),
+	                  React.createElement(
+	                    _reactBootstrap.Col,
+	                    { xs: 12, md: 7 },
+	                    React.createElement(_BooksPager2.default, {
+	                      total: this.state.total,
+	                      onChangePage: this.handleChangePage
+	                    })
+	                  )
+	                )
+	              )
+	            )
+	          ),
+	          React.createElement(
+	            _reactBootstrap.Row,
+	            null,
+	            React.createElement(
+	              _reactBootstrap.Col,
+	              { xs: 12, md: 12 },
+	              React.createElement(_ShowBooks2.default, { books: this.state.books })
+	            )
+	          )
+	        )
 	      );
 	    }
 	  }]);
@@ -59883,6 +59975,8 @@
 
 	__webpack_require__(876);
 
+	var _reactBootstrap = __webpack_require__(572);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
@@ -59921,16 +60015,32 @@
 	        return React.createElement(
 	          "div",
 	          { id: "pagination" },
-	          React.createElement(_rcPagination2.default, {
-	            onChange: this.handlePageChange,
-	            current: this.state.current,
-	            total: this.props.total
-	          }),
 	          React.createElement(
-	            "label",
+	            _reactBootstrap.Row,
 	            null,
-	            "Total Books: ",
-	            this.props.total
+	            React.createElement(
+	              _reactBootstrap.Col,
+	              { xs: 12, md: 8 },
+	              React.createElement(_rcPagination2.default, {
+	                onChange: this.handlePageChange,
+	                current: this.state.current,
+	                total: this.props.total
+	              })
+	            ),
+	            React.createElement(
+	              _reactBootstrap.Col,
+	              { xs: 12, md: 4 },
+	              React.createElement(
+	                "label",
+	                null,
+	                "Total Books: ",
+	                React.createElement(
+	                  _reactBootstrap.Badge,
+	                  null,
+	                  this.props.total
+	                )
+	              )
+	            )
 	          )
 	        );
 	      } else {
@@ -62900,6 +63010,8 @@
 
 	var _SuccessMessage2 = _interopRequireDefault(_SuccessMessage);
 
+	var _reactBootstrap = __webpack_require__(572);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
@@ -62986,91 +63098,156 @@
 	        var buttons = typeof book.isbn == "undefined" ? null : React.createElement(
 	          "div",
 	          null,
+	          React.createElement(
+	            _reactBootstrap.Button,
+	            { className: "button-custom", onClick: _reactRouter.browserHistory.goBack },
+	            "Back"
+	          ),
 	          this.props.editInfo ? React.createElement(
-	            "button",
+	            _reactBootstrap.Button,
 	            { className: "save-button", onClick: this.onSave },
 	            "Save"
 	          ) : React.createElement(
-	            "button",
+	            _reactBootstrap.Button,
 	            { className: "button-custom", onClick: this.onEdit },
 	            "Edit"
 	          ),
 	          React.createElement(
-	            "button",
+	            _reactBootstrap.Button,
 	            { className: "button-custom", onClick: this.onDelete },
 	            "Delete"
 	          )
 	        );
 	        return React.createElement(
-	          "div",
-	          { className: "trade-all" },
+	          _reactBootstrap.Grid,
+	          null,
 	          React.createElement(
-	            "div",
-	            { className: "trade-info" },
-	            React.createElement("img", { className: "trade-image", src: book.image, alt: book.title }),
+	            _reactBootstrap.Row,
+	            null,
 	            React.createElement(
-	              "div",
-	              { className: "trade-detail" },
+	              _reactBootstrap.Col,
+	              { xs: 12, md: 4, className: "trade-image-div" },
+	              React.createElement("img", { className: "trade-image", src: book.image, alt: book.title })
+	            ),
+	            React.createElement(
+	              _reactBootstrap.Col,
+	              { xs: 12, md: 8 },
 	              React.createElement(
-	                "div",
-	                { className: "book-fields" },
+	                _reactBootstrap.Row,
+	                null,
 	                React.createElement(
-	                  "div",
-	                  null,
+	                  _reactBootstrap.Col,
+	                  { xs: 12, md: 12 },
 	                  React.createElement(
 	                    "b",
 	                    null,
 	                    this.props.editInfo ? React.createElement(
 	                      "div",
 	                      null,
-	                      "Title: ",
-	                      React.createElement("input", { className: "form-input", type: "text", value: book.title, onChange: this.onTitleChange })
+	                      "Title:",
+	                      " ",
+	                      React.createElement("input", {
+	                        className: "form-input",
+	                        type: "text",
+	                        value: book.title,
+	                        onChange: this.onTitleChange
+	                      })
 	                    ) : book.title
 	                  )
-	                ),
-	                React.createElement(
-	                  "div",
-	                  null,
-	                  this.props.editInfo ? React.createElement(
-	                    "div",
-	                    null,
-	                    "Authors: ",
-	                    React.createElement("input", { className: "form-input", type: "text", value: book.authors, onChange: this.onAuthorsChange })
-	                  ) : book.authors
-	                ),
-	                React.createElement(
-	                  "div",
-	                  null,
-	                  "ISBN: ",
-	                  this.props.editInfo ? React.createElement("input", { disabled: true, className: "form-input", type: "text", value: book.isbn, onChange: this.onIsbnChange }) : book.isbn
-	                ),
-	                React.createElement(
-	                  "div",
-	                  null,
-	                  "Pages: ",
-	                  this.props.editInfo ? React.createElement("input", { className: "form-input", type: "text", value: book.pages, onChange: this.onPagesChange }) : book.pages
 	                )
 	              ),
 	              React.createElement(
-	                "button",
-	                { className: "back-button", onClick: _reactRouter.browserHistory.goBack },
-	                "Back"
+	                _reactBootstrap.Row,
+	                null,
+	                React.createElement(
+	                  _reactBootstrap.Col,
+	                  { xs: 12, md: 12 },
+	                  this.props.editInfo ? React.createElement(
+	                    "div",
+	                    null,
+	                    "Authors:",
+	                    " ",
+	                    React.createElement("input", {
+	                      className: "form-input",
+	                      type: "text",
+	                      value: book.authors,
+	                      onChange: this.onAuthorsChange
+	                    })
+	                  ) : book.authors
+	                )
 	              ),
-	              React.createElement("br", null),
-	              buttons,
-	              React.createElement(_ErrorMessage2.default, { errors: this.props.errors }),
-	              React.createElement(_SuccessMessage2.default, { success: this.props.success })
+	              React.createElement(
+	                _reactBootstrap.Row,
+	                null,
+	                React.createElement(
+	                  _reactBootstrap.Col,
+	                  { xs: 12, md: 12 },
+	                  "ISBN:",
+	                  " ",
+	                  this.props.editInfo ? React.createElement("input", {
+	                    disabled: true,
+	                    className: "form-input",
+	                    type: "text",
+	                    value: book.isbn,
+	                    onChange: this.onIsbnChange
+	                  }) : book.isbn
+	                )
+	              ),
+	              React.createElement(
+	                _reactBootstrap.Row,
+	                null,
+	                React.createElement(
+	                  _reactBootstrap.Col,
+	                  { xs: 12, md: 12 },
+	                  "Pages:",
+	                  " ",
+	                  this.props.editInfo ? React.createElement("input", {
+	                    className: "form-input",
+	                    type: "text",
+	                    value: book.pages,
+	                    onChange: this.onPagesChange
+	                  }) : book.pages
+	                )
+	              ),
+	              React.createElement(
+	                _reactBootstrap.Row,
+	                null,
+	                React.createElement(
+	                  _reactBootstrap.Col,
+	                  { xs: 12, md: 12 },
+	                  React.createElement(_ErrorMessage2.default, { errors: this.props.errors }),
+	                  React.createElement(_SuccessMessage2.default, { success: this.props.success })
+	                )
+	              ),
+	              React.createElement(
+	                _reactBootstrap.Row,
+	                null,
+	                React.createElement(
+	                  _reactBootstrap.Col,
+	                  { xs: 12, md: 12 },
+	                  buttons
+	                )
+	              )
 	            )
 	          ),
 	          React.createElement(
-	            "div",
-	            { className: "description" },
-	            this.props.editInfo ? React.createElement(
-	              "div",
-	              null,
-	              "Description: ",
-	              React.createElement("textarea", { className: "form-textarea", value: book.description, onChange: this.onDescChange })
-	            ) : book.description
+	            _reactBootstrap.Row,
+	            null,
+	            React.createElement(
+	              _reactBootstrap.Col,
+	              { xs: 12, md: 12 },
+	              this.props.editInfo ? React.createElement(
+	                "div",
+	                null,
+	                "Description:",
+	                " ",
+	                React.createElement("textarea", {
+	                  className: "form-textarea",
+	                  value: book.description,
+	                  onChange: this.onDescChange
+	                })
+	              ) : book.description
+	            )
 	          )
 	        );
 	      } else {
@@ -63537,7 +63714,7 @@
 
 
 	// module
-	exports.push([module.id, "* {\n  box-sizing: border-box;\n}\n\nbody {\n  margin: 0;\n  padding: 0;\n  font-family: \"Open Sans\", sans-serif;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n  color: #212121;\n  letter-spacing: 0.05em;\n}\n\nh1,\nh2,\nh3,\np,\ninput,\nli,\nlabel {\n  font-weight: 300;\n  letter-spacing: 0.04em;\n}\n\nh1 {\n  margin: 1em 0;\n}\n\nth {\n  font-weight: 600;\n}\n\nsvg {\n  width: 32px;\n  height: 32px;\n}\n\ng {\n  fill: #616161;\n}\n\na,\nbutton,\ninput[type=\"submit\"],\ninput[type=\"button\"] {\n  padding: 0.6em 1.5em;\n  opacity: 0.85;\n  cursor: pointer;\n  transition: all 0.25s ease-in;\n  -webkit-transition: all 0.25s ease-in;\n  border-radius: 2px;\n  color: #ffffff;\n  font-size: 0.9em;\n  border: none;\n}\n\ninput:focus,\nbutton:focus,\ninput[type=\"submit\"]:focus,\ninput[type=\"button\"]:focus {\n  outline: none;\n}\n\na:hover,\nbutton:hover,\ninput[type=\"button\"]:hover {\n  opacity: 1;\n}\n\n.container {\n  width: 100%;\n}\n\n.main-container {\n  display: flex;\n  display: -webkit-flex;\n  min-height: 100vh;\n  flex-direction: column;\n}\n\n.main-body {\n  display: flex;\n  display: -webkit-flex;\n  flex: 1;\n  -webkit-flex: 1;\n}\n\n/* Header */\n\n.header-container {\n  display: flex;\n  display: -webkit-flex;\n  align-items: center;\n  -webkit-align-items: center;\n  justify-content: center;\n  -webkit-justify-content: center;\n  padding: 1.5em;\n}\n\n.header-home {\n  color: #ffffff;\n  background-color: transparent;\n}\n\n.header-route {\n  color: inherit;\n  background-color: #f4f6f8;\n}\n\n.header-left {\n  flex: 1;\n  -webkit-flex: 1;\n  display: flex;\n  display: -webkit-flex;\n  align-items: baseline;\n  -webkit-align-items: baseline;\n}\n\n.header-title {\n  margin: 0;\n  font-size: 1.75em;\n}\n\n.header-title > a {\n  padding: 0;\n  font-weight: 300;\n  color: inherit;\n  text-decoration: none;\n}\n\n.header-text {\n  margin: 0 0 0 1em;\n  font-size: 0.9em;\n}\n\n.header-right {\n  flex: 1;\n  -webkit-flex: 1;\n  display: flex;\n  display: -webkit-flex;\n  justify-content: flex-end;\n  -webkit-justify-content: flex-end;\n}\n\n.header-button-middle {\n  margin-right: 1em;\n  text-decoration: none;\n  background-color: #311b92;\n  margin: 2px;\n  border-radius: 4px;\n}\n\n.header-button-middle > a {\n  color: white !important;\n}\n\n.header-button-right {\n  margin-right: 1em;\n  text-decoration: none;\n  background-color: #ff3d00;\n  margin: 2px;\n  border-radius: 4px;\n}\n\n.header-button-right > a {\n  color: white !important;\n}\n/* Footer */\n\n.footer-container {\n  background-color: #e4e6e8;\n  margin-top: 1em;\n}\n\n.footer-container > p {\n  text-align: center;\n  margin: 0;\n  padding: 1em;\n}\n\n/* Home View */\n\n.home-container {\n  flex: 1;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n}\n\n.home-image {\n  display: flex;\n  display: -webkit-flex;\n  align-items: center;\n  -webkit-align-items: center;\n  width: 100%;\n  height: 600px;\n  position: relative;\n  z-index: -1;\n  top: -10em;\n  left: 0;\n  background-image: url(" + __webpack_require__(904) + ");\n  background-position: top center;\n  background-repeat: no-repeat;\n  background-size: cover;\n  transition: opacity 0.4s linear;\n  -webkit-transition: opacity 0.4s linear;\n}\n\n.home-loading {\n  opacity: 0;\n}\n\n.home-loaded {\n  opacity: 0.8;\n}\n\n.home-image > h1 {\n  flex: 1;\n  -webkit-flex: 1;\n  text-align: center;\n  color: #ffffff;\n  font-size: 3.25em;\n  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);\n}\n\n.home-section {\n  position: relative;\n  top: -100px;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n}\n\n.home-detail {\n  flex: 1;\n  -webkit-flex: 1;\n  display: flex;\n  display: -webkit-flex;\n  justify-content: center;\n  -webkit-justify-content: center;\n  align-items: center;\n  -webkit-align-items: center;\n}\n\n.home-detail > h2 {\n  margin: 0;\n  padding: 1em 0;\n  border-bottom: 2px solid #cccccc;\n}\n\n.home-detail > i {\n  margin-right: 0.5em;\n}\n\n/* Account View */\n\n.account-container {\n  width: 100%;\n  margin: 0 auto;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n  align-items: center;\n  -webkit-align-items: center;\n}\n\n.account-container svg {\n  position: relative;\n  top: 10px;\n}\n\n.form-container {\n  flex: 1;\n  -webkit-flex: 1;\n}\n\n.form-input {\n  color: inherit;\n  width: 15em;\n  font-size: 1em;\n  padding: 0.4em 0.2em;\n  outline: none;\n}\n\n.form-button {\n  margin-left: 1em;\n  font-size: 0.9em;\n  background-color: #02b875;\n}\n\n.form-textarea {\n  width: 100%;\n  height: 100px;\n}\n.search-container {\n  width: 100%;\n  margin-top: 1em;\n  display: flex;\n  display: -webkit-flex;\n  margin: auto;\n}\n\n.data-label {\n  line-height: 100%;\n}\n\n.search-results {\n  display: flex;\n  display: -webkit-flex;\n  flex-wrap: wrap;\n  -webkit-flex-wrap: wrap;\n}\n\n.book-entry {\n  color: inherit;\n  text-decoration: none;\n  opacity: 1;\n  font-size: 1em;\n  flex: 0 0 16.67%;\n  -webkit-flex: 0 0 16.67%;\n  margin: 0 1em;\n  padding: 0;\n  text-align: center;\n  cursor: pointer;\n  transition: color 0.25s ease-in;\n  -webkit-transition: color 0.25s ease-in;\n}\n\n.book-entry:hover {\n  color: #02b875;\n}\n\n.book-detail {\n  flex: 0 0 20em;\n  background: aliceblue;\n  border: 1px solid;\n  padding: 10px;\n}\n\n.book-detail > button {\n  background-color: #02b875;\n}\n\n.book-image {\n  margin-top: 1em;\n  width: calc(60em / 6);\n  border: 1px solid #cccccc;\n}\n\n/* Register View */\n\n.register-container {\n  margin: 0 auto;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n  align-items: center;\n  -webkit-align-items: center;\n}\n\n.register-form {\n  width: 15em;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n}\n\n.register-input {\n  margin-bottom: 1em;\n  flex: 1;\n  -webkit-flex: 1;\n  color: inherit;\n  font-size: 1em;\n  padding: 0.4em 0.2em;\n  outline: none;\n}\n\n.register-submit {\n  margin: 1em 0;\n  opacity: 0.8;\n  cursor: pointer;\n  transition: all 0.25s ease-in;\n  -webkit-transition: all 0.25s ease-in;\n  background-color: #02b875;\n}\n\n.register-submit:hover {\n  opacity: 1;\n}\n\n.error-messages {\n  color: #ef5350;\n  margin: 40px;\n  flex: 4;\n  -webkit-flex: 4;\n}\n\n.error-messages > p {\n  margin: 1em 0 0 0;\n  text-align: center;\n}\n\n.success-messages {\n  color: #02b875;\n  flex: 4;\n  -webkit-flex: 4;\n}\n\n/* Login View */\n\n.login-container {\n  margin: 0 auto;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n  align-items: center;\n  -webkit-align-items: center;\n}\n\n.login-form {\n  width: 15em;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n}\n\n.login-input {\n  margin-bottom: 1em;\n  flex: 1;\n  -webkit-flex: 1;\n  color: inherit;\n  font-size: 1em;\n  padding: 0.4em 0.2em;\n  outline: none;\n}\n\n.login-submit {\n  margin: 1em 0;\n  cursor: pointer;\n  transition: all 0.25s ease-in;\n  -webkit-transition: all 0.25s ease-in;\n  border-radius: 2px;\n  background-color: #02b875;\n}\n\n/* Settings View */\n\n.settings-container {\n  margin: 0 auto;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n  align-items: flex-start;\n  -webkit-align-items: flex-start;\n}\n\n.settings-control {\n  margin-top: 2em;\n  display: flex;\n  display: -webkit-flex;\n  align-items: center;\n  -webkit-align-items: center;\n}\n\n.settings-control > h2 {\n  margin: 0;\n  flex: 1;\n  -webkit-flex: 1;\n}\n\n.info-button {\n  margin-left: 2em;\n  background-color: #1565c0;\n}\n\n.book-button {\n  margin-left: 1em;\n  background-color: #b71c1c;\n}\n\n.save-button {\n  margin-left: 2em;\n  background-color: #02b875;\n}\n\n.user-info {\n  margin-top: 1em;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n  justify-content: center;\n  -webkit-justify-content: center;\n  list-style: none;\n}\n\n.user-name {\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n}\n\n.user-datum {\n  display: flex;\n  display: -webkit-flex;\n  justify-content: flex-start;\n  -webkit-justify-content: flex-start;\n  align-items: center;\n  -webkit-align-items: center;\n}\n\n.user-datum > i {\n  flex: 0 0 auto;\n  -webkit-flex: 0 0 auto;\n}\n\n.user-datum > h3 {\n  margin: 0.4em 0;\n  padding-left: 0.5em;\n  font-size: 1.2em;\n  flex: 1 1 auto;\n  -webkit-flex: 1 1 auto;\n}\n\n.user-name > h3 {\n  margin: 0.4em 0.55em;\n}\n\n.user-datum b {\n  padding-right: 0.5em;\n}\n\n.user-books {\n  margin-top: 1em;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n}\n\n.user-books > h3 {\n  margin-top: 0;\n}\n\n.user-book {\n  text-align: center;\n  flex: 1;\n  -webkit-flex: 1;\n}\n\n.user-book td {\n  position: relative;\n  padding: 0.5em;\n}\n\n.user-book-image {\n  display: inline-block;\n  position: relative;\n  z-index: -1;\n  margin: 0 auto;\n  border: 1px solid #cccccc;\n  height: 100px;\n  width: auto;\n}\n\n.user-book-svg {\n  position: absolute;\n  width: 32px;\n  height: 32px;\n  top: 42px;\n  right: 30px;\n  cursor: pointer;\n}\n\n.top-layer {\n  z-index: 1;\n}\n\n.bottom-layer {\n  z-index: -1;\n}\n\n.save g {\n  fill: #02b875;\n}\n\n.remove g {\n  fill: #f44336;\n}\n\n.user-book input[type=\"radio\"] {\n  margin-top: 0.75em;\n}\n\n.trade-buttons {\n  text-align: center;\n  flex: 1;\n  -webkit-flex: 1;\n}\n\n.accept-button {\n  background-color: #02b875;\n}\n\n.decline-button {\n  margin-left: 1em;\n  background-color: #b71c1c;\n}\n\n.cancel-button {\n  background-color: #b71c1c;\n}\n\n/* Library View */\n\n.library-container {\n  margin: 0 auto;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n  align-items: center;\n  -webkit-align-items: center;\n}\n\n/* Trade View */\n\n.trade-container {\n  width: 50em;\n  margin: 0 auto;\n  margin-top: 2em;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: row;\n  -webkit-flex-direction: row;\n}\n\n.book-container {\n  display: flex;\n  display: -webkit-flex;\n  align-items: center;\n  -webkit-align-items: center;\n}\n\n.trade-all {\n  width: 100%;\n}\n\n.trade-info {\n  flex: 0 0 auto;\n  -webkit-flex: 0 0 auto;\n  display: flex;\n  display: -webkit-flex;\n}\n\n.trade-image {\n  max-height: 300px;\n  width: auto;\n  flex: 0 0 auto;\n  -webkit-flex: 0 0 auto;\n  border: 1px solid #cccccc;\n  width: 20%;\n}\n\n.trade-detail {\n  flex: 1;\n  -webkit-flex: 1;\n  text-align: center;\n  width: 80%;\n}\n\n.propose-button,\n.button-custom {\n  margin: 0.5em;\n  background-color: #1565c0;\n}\n\n.back-button {\n  background-color: #1565c0;\n}\n\n.trade-form {\n  flex: 0 0 16em;\n  -webkit-flex: 0 0 16em;\n}\n\n.trade-checkbox {\n  padding-top: 0.75em;\n}\n\n.trade-checkbox input {\n  margin-right: 0.5em;\n  position: relative;\n  bottom: 1px;\n}\n\n.trade-button {\n  margin-top: 1em;\n  transition: all 0.25s ease-in;\n  -webkit-transition: all 0.25s ease-in;\n  background-color: #02b875;\n}\n\n.trade-button:hover {\n  opacity: 1;\n}\n\n#scanner-container video {\n  position: absolute;\n  z-index: -1;\n}\n\n.rc-pagination {\n  display: table-cell;\n}\n.rc-pagination-prev a,\n.rc-pagination-next a {\n  padding: 0;\n}\n\n.rc-pagination-item {\n  background-color: unset;\n}\n.rc-pagination-item-active {\n  background-color: #2db7f5;\n}\n\na:focus,\na:hover {\n  color: white;\n}\n\n#search-form {\n  display: table-cell;\n  vertical-align: top;\n  text-align: left;\n}\n\n#pagination-search {\n  display: inline-table;\n  width: 100%;\n  background: #f4f6f8;\n  padding: 20px;\n  border: 1px solid lightgrey;\n}\n#pagination {\n  float: right;\n}\n#pagination label {\n  padding-left: 20px;\n  vertical-align: middle;\n  display: table-cell;\n}\n\n.description {\n  margin-top: 20px;\n}\n\n.book-fields {\n  padding: 20px;\n}\n\n.loader-container {\n  flex: 4;\n  -webkit-flex: 4;\n}\n\n.loader {\n  margin: 40px auto;\n  border: 16px solid #f3f3f3;\n  border-radius: 50%;\n  border-top: 16px solid #3498db;\n  width: 120px;\n  height: 120px;\n  -webkit-animation: spin 2s linear infinite; /* Safari */\n  animation: spin 2s linear infinite;\n}\n\n/* Safari */\n@-webkit-keyframes spin {\n  0% {\n    -webkit-transform: rotate(0deg);\n  }\n  100% {\n    -webkit-transform: rotate(360deg);\n  }\n}\n\n@keyframes spin {\n  0% {\n    transform: rotate(0deg);\n  }\n  100% {\n    transform: rotate(360deg);\n  }\n}\n\n.btn-search {\n  width: 100%;\n}\n\n@media screen and (max-width: 768px) {\n  .home-detail {\n    font-size: 12px;\n  }\n  .home-detail > h2 {\n    font-size: 12px;\n  }\n  .home-image > h1 {\n    font-size: 30px;\n  }\n  .footer-container > p {\n    font-size: 11px;\n  }\n  .book-entry {\n    margin: auto !important;\n  }\n}\n\n.middle {\n  text-align: center;\n  padding-top: 20px;\n}\n\n.spacer-bottom {\n  height: 100px;\n}\n", ""]);
+	exports.push([module.id, "* {\n  box-sizing: border-box;\n}\n\nbody {\n  margin: 0;\n  padding: 0;\n  font-family: \"Open Sans\", sans-serif;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n  color: #212121;\n  letter-spacing: 0.05em;\n}\n\nh1,\nh2,\nh3,\np,\ninput,\nli,\nlabel {\n  font-weight: 300;\n  letter-spacing: 0.04em;\n}\n\nh1 {\n  margin: 1em 0;\n}\n\nth {\n  font-weight: 600;\n}\n\nsvg {\n  width: 32px;\n  height: 32px;\n}\n\ng {\n  fill: #616161;\n}\n\na,\nbutton,\ninput[type=\"submit\"],\ninput[type=\"button\"] {\n  padding: 0.6em 1.5em;\n  opacity: 0.85;\n  cursor: pointer;\n  transition: all 0.25s ease-in;\n  -webkit-transition: all 0.25s ease-in;\n  border-radius: 2px;\n  color: #ffffff;\n  font-size: 0.9em;\n  border: none;\n}\n\ninput:focus,\nbutton:focus,\ninput[type=\"submit\"]:focus,\ninput[type=\"button\"]:focus {\n  outline: none;\n}\n\na:hover,\nbutton:hover,\ninput[type=\"button\"]:hover {\n  opacity: 1;\n}\n\n.container {\n  width: 100%;\n}\n\n.main-container {\n  display: flex;\n  display: -webkit-flex;\n  min-height: 100vh;\n  flex-direction: column;\n}\n\n.main-body {\n  display: flex;\n  display: -webkit-flex;\n  flex: 1;\n  -webkit-flex: 1;\n}\n\n/* Header */\n\n.header-container {\n  display: flex;\n  display: -webkit-flex;\n  align-items: center;\n  -webkit-align-items: center;\n  justify-content: center;\n  -webkit-justify-content: center;\n  padding: 1.5em;\n}\n\n.header-home {\n  color: #ffffff;\n  background-color: transparent;\n}\n\n.header-route {\n  color: inherit;\n  background-color: #f4f6f8;\n}\n\n.header-left {\n  flex: 1;\n  -webkit-flex: 1;\n  display: flex;\n  display: -webkit-flex;\n  align-items: baseline;\n  -webkit-align-items: baseline;\n}\n\n.header-title {\n  margin: 0;\n  font-size: 1.75em;\n}\n\n.header-title > a {\n  padding: 0;\n  font-weight: 300;\n  color: inherit;\n  text-decoration: none;\n}\n\n.header-text {\n  margin: 0 0 0 1em;\n  font-size: 0.9em;\n}\n\n.header-right {\n  flex: 1;\n  -webkit-flex: 1;\n  display: flex;\n  display: -webkit-flex;\n  justify-content: flex-end;\n  -webkit-justify-content: flex-end;\n}\n\n.header-button-middle {\n  margin-right: 1em;\n  text-decoration: none;\n  background-color: #311b92;\n  margin: 2px;\n  border-radius: 4px;\n}\n\n.header-button-middle > a {\n  color: white !important;\n}\n\n.header-button-right {\n  margin-right: 1em;\n  text-decoration: none;\n  background-color: #ff3d00;\n  margin: 2px;\n  border-radius: 4px;\n}\n\n.header-button-right > a {\n  color: white !important;\n}\n/* Footer */\n\n.footer-container {\n  background-color: #e4e6e8;\n  margin-top: 1em;\n}\n\n.footer-container > p {\n  text-align: center;\n  margin: 0;\n  padding: 1em;\n}\n\n/* Home View */\n\n.home-container {\n  flex: 1;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n}\n\n.home-image {\n  display: flex;\n  display: -webkit-flex;\n  align-items: center;\n  -webkit-align-items: center;\n  width: 100%;\n  height: 600px;\n  position: relative;\n  z-index: -1;\n  top: -10em;\n  left: 0;\n  background-image: url(" + __webpack_require__(904) + ");\n  background-position: top center;\n  background-repeat: no-repeat;\n  background-size: cover;\n  transition: opacity 0.4s linear;\n  -webkit-transition: opacity 0.4s linear;\n}\n\n.home-loading {\n  opacity: 0;\n}\n\n.home-loaded {\n  opacity: 0.8;\n}\n\n.home-image > h1 {\n  flex: 1;\n  -webkit-flex: 1;\n  text-align: center;\n  color: #ffffff;\n  font-size: 3.25em;\n  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);\n}\n\n.home-section {\n  position: relative;\n  top: -100px;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n}\n\n.home-detail {\n  flex: 1;\n  -webkit-flex: 1;\n  display: flex;\n  display: -webkit-flex;\n  justify-content: center;\n  -webkit-justify-content: center;\n  align-items: center;\n  -webkit-align-items: center;\n}\n\n.home-detail > h2 {\n  margin: 0;\n  padding: 1em 0;\n  border-bottom: 2px solid #cccccc;\n}\n\n.home-detail > i {\n  margin-right: 0.5em;\n}\n\n/* Account View */\n\n.account-container {\n  width: 100%;\n  margin: 0 auto;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n  align-items: center;\n  -webkit-align-items: center;\n}\n\n.account-container svg {\n  position: relative;\n  top: 10px;\n}\n\n.form-container {\n  flex: 1;\n  -webkit-flex: 1;\n}\n\n.form-input {\n  color: inherit;\n  width: 15em;\n  font-size: 1em;\n  padding: 0.4em 0.2em;\n  outline: none;\n}\n\n.form-button {\n  margin-left: 1em;\n  font-size: 0.9em;\n  background-color: #02b875;\n}\n\n.form-textarea {\n  width: 100%;\n  height: 100px;\n}\n.search-container {\n  width: 100%;\n  margin-top: 1em;\n  display: flex;\n  display: -webkit-flex;\n  margin: auto;\n}\n\n.data-label {\n  line-height: 100%;\n}\n\n.search-results {\n  display: flex;\n  display: -webkit-flex;\n  flex-wrap: wrap;\n  -webkit-flex-wrap: wrap;\n}\n\n.book-entry {\n  color: inherit;\n  text-decoration: none;\n  opacity: 1;\n  font-size: 1em;\n  flex: 0 0 16.67%;\n  -webkit-flex: 0 0 16.67%;\n  margin: 0 1em;\n  padding: 0;\n  text-align: center;\n  cursor: pointer;\n  transition: color 0.25s ease-in;\n  -webkit-transition: color 0.25s ease-in;\n}\n\n.book-entry:hover {\n  color: #02b875;\n}\n\n.book-detail {\n  flex: 0 0 20em;\n  background: aliceblue;\n  border: 1px solid;\n  padding: 10px;\n}\n\n.book-detail > button {\n  background-color: #02b875;\n}\n\n.book-image {\n  margin-top: 1em;\n  width: calc(60em / 6);\n  border: 1px solid #cccccc;\n}\n\n/* Register View */\n\n.register-container {\n  margin: 0 auto;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n  align-items: center;\n  -webkit-align-items: center;\n}\n\n.register-form {\n  width: 15em;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n}\n\n.register-input {\n  margin-bottom: 1em;\n  flex: 1;\n  -webkit-flex: 1;\n  color: inherit;\n  font-size: 1em;\n  padding: 0.4em 0.2em;\n  outline: none;\n}\n\n.register-submit {\n  margin: 1em 0;\n  opacity: 0.8;\n  cursor: pointer;\n  transition: all 0.25s ease-in;\n  -webkit-transition: all 0.25s ease-in;\n  background-color: #02b875;\n}\n\n.register-submit:hover {\n  opacity: 1;\n}\n\n.error-messages {\n  color: #ef5350;\n  margin: 40px;\n  flex: 4;\n  -webkit-flex: 4;\n}\n\n.error-messages > p {\n  margin: 1em 0 0 0;\n  text-align: center;\n}\n\n.success-messages {\n  color: #02b875;\n  flex: 4;\n  -webkit-flex: 4;\n}\n\n/* Login View */\n\n.login-container {\n  margin: 0 auto;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n  align-items: center;\n  -webkit-align-items: center;\n}\n\n.login-form {\n  width: 15em;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n}\n\n.login-input {\n  margin-bottom: 1em;\n  flex: 1;\n  -webkit-flex: 1;\n  color: inherit;\n  font-size: 1em;\n  padding: 0.4em 0.2em;\n  outline: none;\n}\n\n.login-submit {\n  margin: 1em 0;\n  cursor: pointer;\n  transition: all 0.25s ease-in;\n  -webkit-transition: all 0.25s ease-in;\n  border-radius: 2px;\n  background-color: #02b875;\n}\n\n/* Settings View */\n\n.settings-container {\n  margin: 0 auto;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n  align-items: flex-start;\n  -webkit-align-items: flex-start;\n}\n\n.settings-control {\n  margin-top: 2em;\n  display: flex;\n  display: -webkit-flex;\n  align-items: center;\n  -webkit-align-items: center;\n}\n\n.settings-control > h2 {\n  margin: 0;\n  flex: 1;\n  -webkit-flex: 1;\n}\n\n.info-button {\n  margin-left: 2em;\n  background-color: #1565c0;\n}\n\n.book-button {\n  margin-left: 1em;\n  background-color: #b71c1c;\n}\n\n.save-button {\n  margin-left: 2em;\n  background-color: #02b875;\n}\n\n.user-info {\n  margin-top: 1em;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n  justify-content: center;\n  -webkit-justify-content: center;\n  list-style: none;\n}\n\n.user-name {\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n}\n\n.user-datum {\n  display: flex;\n  display: -webkit-flex;\n  justify-content: flex-start;\n  -webkit-justify-content: flex-start;\n  align-items: center;\n  -webkit-align-items: center;\n}\n\n.user-datum > i {\n  flex: 0 0 auto;\n  -webkit-flex: 0 0 auto;\n}\n\n.user-datum > h3 {\n  margin: 0.4em 0;\n  padding-left: 0.5em;\n  font-size: 1.2em;\n  flex: 1 1 auto;\n  -webkit-flex: 1 1 auto;\n}\n\n.user-name > h3 {\n  margin: 0.4em 0.55em;\n}\n\n.user-datum b {\n  padding-right: 0.5em;\n}\n\n.user-books {\n  margin-top: 1em;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n}\n\n.user-books > h3 {\n  margin-top: 0;\n}\n\n.user-book {\n  text-align: center;\n  flex: 1;\n  -webkit-flex: 1;\n}\n\n.user-book td {\n  position: relative;\n  padding: 0.5em;\n}\n\n.user-book-image {\n  display: inline-block;\n  position: relative;\n  z-index: -1;\n  margin: 0 auto;\n  border: 1px solid #cccccc;\n  height: 100px;\n  width: auto;\n}\n\n.user-book-svg {\n  position: absolute;\n  width: 32px;\n  height: 32px;\n  top: 42px;\n  right: 30px;\n  cursor: pointer;\n}\n\n.top-layer {\n  z-index: 1;\n}\n\n.bottom-layer {\n  z-index: -1;\n}\n\n.save g {\n  fill: #02b875;\n}\n\n.remove g {\n  fill: #f44336;\n}\n\n.user-book input[type=\"radio\"] {\n  margin-top: 0.75em;\n}\n\n.trade-buttons {\n  text-align: center;\n  flex: 1;\n  -webkit-flex: 1;\n}\n\n.accept-button {\n  background-color: #02b875;\n}\n\n.decline-button {\n  margin-left: 1em;\n  background-color: #b71c1c;\n}\n\n.cancel-button {\n  background-color: #b71c1c;\n}\n\n/* Library View */\n\n.library-container {\n  margin: 0 auto;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  -webkit-flex-direction: column;\n  align-items: center;\n  -webkit-align-items: center;\n}\n\n/* Trade View */\n\n.trade-container {\n  width: 50em;\n  margin: 0 auto;\n  margin-top: 2em;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: row;\n  -webkit-flex-direction: row;\n}\n\n.book-container {\n  display: flex;\n  display: -webkit-flex;\n  align-items: center;\n  -webkit-align-items: center;\n}\n\n.trade-all {\n  width: 100%;\n}\n\n.trade-info {\n  flex: 0 0 auto;\n  -webkit-flex: 0 0 auto;\n  display: flex;\n  display: -webkit-flex;\n}\n\n.trade-image {\n  max-height: 300px;\n  width: auto;\n  flex: 0 0 auto;\n  -webkit-flex: 0 0 auto;\n  border: 1px solid #cccccc;\n  margin: 10px;\n  /* width: 20%; */\n}\n\n.trade-detail {\n  flex: 1;\n  -webkit-flex: 1;\n  text-align: center;\n  width: 80%;\n}\n\n.propose-button,\n.button-custom {\n  margin: 0.5em;\n  background-color: #1565c0;\n}\n\n.back-button {\n  background-color: #1565c0;\n}\n\n.trade-form {\n  flex: 0 0 16em;\n  -webkit-flex: 0 0 16em;\n}\n\n.trade-checkbox {\n  padding-top: 0.75em;\n}\n\n.trade-checkbox input {\n  margin-right: 0.5em;\n  position: relative;\n  bottom: 1px;\n}\n\n.trade-button {\n  margin-top: 1em;\n  transition: all 0.25s ease-in;\n  -webkit-transition: all 0.25s ease-in;\n  background-color: #02b875;\n}\n\n.trade-button:hover {\n  opacity: 1;\n}\n\n#scanner-container video {\n  position: absolute;\n  z-index: -1;\n}\n\n.rc-pagination {\n  display: table-cell;\n}\n.rc-pagination-prev a,\n.rc-pagination-next a {\n  padding: 0;\n}\n\n.rc-pagination-item {\n  background-color: unset;\n}\n.rc-pagination-item-active {\n  background-color: #2db7f5;\n}\n\na:focus,\na:hover {\n  color: white;\n}\n\n#search-form {\n  display: table-cell;\n  vertical-align: top;\n  text-align: left;\n}\n\n#pagination-search {\n  display: inline-table;\n  width: 100%;\n  background: #f4f6f8;\n  padding: 20px;\n  border: 1px solid lightgrey;\n}\n#pagination {\n  float: right;\n}\n#pagination label {\n  vertical-align: middle;\n  display: table-cell;\n}\n\n.description {\n  margin-top: 20px;\n}\n\n.book-fields {\n  padding: 20px;\n}\n\n.loader-container {\n  flex: 4;\n  -webkit-flex: 4;\n}\n\n.loader {\n  margin: 40px auto;\n  border: 16px solid #f3f3f3;\n  border-radius: 50%;\n  border-top: 16px solid #3498db;\n  width: 120px;\n  height: 120px;\n  -webkit-animation: spin 2s linear infinite; /* Safari */\n  animation: spin 2s linear infinite;\n}\n\n/* Safari */\n@-webkit-keyframes spin {\n  0% {\n    -webkit-transform: rotate(0deg);\n  }\n  100% {\n    -webkit-transform: rotate(360deg);\n  }\n}\n\n@keyframes spin {\n  0% {\n    transform: rotate(0deg);\n  }\n  100% {\n    transform: rotate(360deg);\n  }\n}\n\n.btn-search {\n  width: 100%;\n}\n\n@media screen and (max-width: 768px) {\n  .home-detail {\n    font-size: 12px;\n  }\n  .home-detail > h2 {\n    font-size: 12px;\n  }\n  .home-image > h1 {\n    font-size: 30px;\n  }\n  .footer-container > p {\n    font-size: 11px;\n  }\n  .book-entry {\n    margin: auto !important;\n  }\n\n  #pagination {\n    padding-top: 10px;\n  }\n  #pagination label {\n    padding-top: 10px;\n  }\n\n  .trade-image-div {\n    text-align: center;\n  }\n}\n\n.middle {\n  text-align: center;\n  padding-top: 20px;\n}\n\n.spacer-bottom {\n  height: 100px;\n}\n", ""]);
 
 	// exports
 

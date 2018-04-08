@@ -4,6 +4,7 @@ import * as React from "react";
 import { browserHistory } from "react-router";
 import ErrorMessage from "./ErrorMessage";
 import SuccessMessage from "./SuccessMessage";
+import { Grid, Row, Col, Button } from "react-bootstrap";
 
 class BookTrade extends React.Component {
   constructor(props) {
@@ -37,14 +38,14 @@ class BookTrade extends React.Component {
   onProposeTrade() {
     this.props.onProposeTrade();
   }
-  onEdit(){
+  onEdit() {
     this.props.onEditInfo();
   }
-  onSave(){
+  onSave() {
     this.props.onEditInfo();
     this.props.onSave();
   }
-  onDelete(){
+  onDelete() {
     this.props.onDelete();
   }
   render() {
@@ -52,31 +53,130 @@ class BookTrade extends React.Component {
     const active = this.props.active;
 
     if (book) {
-      const buttons = (typeof book.isbn == "undefined") ? null :
-      <div>
-        { this.props.editInfo ? (<button className="save-button" onClick={this.onSave}>Save</button>) : (<button className="button-custom" onClick={this.onEdit}>Edit</button>) }
-        <button className="button-custom" onClick={this.onDelete}>Delete</button>
-      </div>
-      return (
-        <div className="trade-all">
-          <div className="trade-info">
-            <img className="trade-image" src={ book.image } alt={ book.title }/>
-            <div className="trade-detail">
-              <div className="book-fields">
-                <div><b>{ this.props.editInfo ? (<div>Title: <input className="form-input" type="text" value={ book.title } onChange={ this.onTitleChange } /></div>) : (book.title)}</b></div>
-                <div>{ this.props.editInfo ? (<div>Authors: <input className="form-input" type="text" value={ book.authors } onChange={ this.onAuthorsChange } /></div>) : (book.authors)}</div>
-                <div>ISBN: { this.props.editInfo ? (<input disabled className="form-input" type="text" value={ book.isbn } onChange={ this.onIsbnChange } />) : (book.isbn)}</div>
-                <div>Pages: { this.props.editInfo ? (<input className="form-input" type="text" value={ book.pages } onChange={ this.onPagesChange } />) : (book.pages)}</div>
-              </div>
-              { /* active ? null : <button className="propose-button" onClick={ this.onProposeTrade }>Propose Trade</button> */}
-              <button className="back-button" onClick={ browserHistory.goBack }>Back</button><br />
-              { buttons }
-              <ErrorMessage errors={ this.props.errors } />
-              <SuccessMessage success={ this.props.success } />
-            </div>
+      const buttons =
+        typeof book.isbn == "undefined" ? null : (
+          <div>
+            <Button className="button-custom" onClick={browserHistory.goBack}>
+              Back
+            </Button>
+            {this.props.editInfo ? (
+              <Button className="save-button" onClick={this.onSave}>
+                Save
+              </Button>
+            ) : (
+              <Button className="button-custom" onClick={this.onEdit}>
+                Edit
+              </Button>
+            )}
+            <Button className="button-custom" onClick={this.onDelete}>
+              Delete
+            </Button>
           </div>
-          <div className="description">{ this.props.editInfo ? (<div>Description: <textarea className="form-textarea" value={ book.description } onChange={ this.onDescChange } /></div>) : (book.description)}</div>
-        </div>
+        );
+      return (
+        <Grid>
+          <Row>
+            <Col xs={12} md={4} className="trade-image-div">
+              <img className="trade-image" src={book.image} alt={book.title} />
+            </Col>
+            <Col xs={12} md={8}>
+              <Row>
+                <Col xs={12} md={12}>
+                  <b>
+                    {this.props.editInfo ? (
+                      <div>
+                        Title:{" "}
+                        <input
+                          className="form-input"
+                          type="text"
+                          value={book.title}
+                          onChange={this.onTitleChange}
+                        />
+                      </div>
+                    ) : (
+                      book.title
+                    )}
+                  </b>
+                </Col>
+              </Row>
+              <Row>
+                <Col xs={12} md={12}>
+                  {this.props.editInfo ? (
+                    <div>
+                      Authors:{" "}
+                      <input
+                        className="form-input"
+                        type="text"
+                        value={book.authors}
+                        onChange={this.onAuthorsChange}
+                      />
+                    </div>
+                  ) : (
+                    book.authors
+                  )}
+                </Col>
+              </Row>
+              <Row>
+                <Col xs={12} md={12}>
+                  ISBN:{" "}
+                  {this.props.editInfo ? (
+                    <input
+                      disabled
+                      className="form-input"
+                      type="text"
+                      value={book.isbn}
+                      onChange={this.onIsbnChange}
+                    />
+                  ) : (
+                    book.isbn
+                  )}
+                </Col>
+              </Row>
+              <Row>
+                <Col xs={12} md={12}>
+                  Pages:{" "}
+                  {this.props.editInfo ? (
+                    <input
+                      className="form-input"
+                      type="text"
+                      value={book.pages}
+                      onChange={this.onPagesChange}
+                    />
+                  ) : (
+                    book.pages
+                  )}
+                </Col>
+              </Row>
+              <Row>
+                <Col xs={12} md={12}>
+                  <ErrorMessage errors={this.props.errors} />
+                  <SuccessMessage success={this.props.success} />
+                </Col>
+              </Row>
+              <Row>
+                <Col xs={12} md={12}>
+                  {buttons}
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={12} md={12}>
+              {this.props.editInfo ? (
+                <div>
+                  Description:{" "}
+                  <textarea
+                    className="form-textarea"
+                    value={book.description}
+                    onChange={this.onDescChange}
+                  />
+                </div>
+              ) : (
+                book.description
+              )}
+            </Col>
+          </Row>
+        </Grid>
       );
     } else {
       return null;
@@ -84,4 +184,4 @@ class BookTrade extends React.Component {
   }
 }
 
-export default BookTrade
+export default BookTrade;

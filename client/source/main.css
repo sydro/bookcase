@@ -669,7 +669,8 @@ input[type="button"]:hover {
   flex: 0 0 auto;
   -webkit-flex: 0 0 auto;
   border: 1px solid #cccccc;
-  width: 20%;
+  margin: 10px;
+  /* width: 20%; */
 }
 
 .trade-detail {
@@ -757,7 +758,6 @@ a:hover {
   float: right;
 }
 #pagination label {
-  padding-left: 20px;
   vertical-align: middle;
   display: table-cell;
 }
@@ -824,6 +824,17 @@ a:hover {
   }
   .book-entry {
     margin: auto !important;
+  }
+
+  #pagination {
+    padding-top: 10px;
+  }
+  #pagination label {
+    padding-top: 10px;
+  }
+
+  .trade-image-div {
+    text-align: center;
   }
 }
 

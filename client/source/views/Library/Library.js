@@ -5,6 +5,7 @@ import fetch from "isomorphic-fetch";
 import ShowBooks from "./components/ShowBooks";
 import BooksPager from "./components/BooksPager";
 import SearchForm from "./components/SearchForm";
+import { Grid, Row, Col } from "react-bootstrap";
 
 class Library extends React.Component {
   constructor() {
@@ -61,15 +62,35 @@ class Library extends React.Component {
   render() {
     return (
       <div className="library-container">
-        <h1>Find a Book</h1>
-        <div id="pagination-search">
-          <SearchForm onSubmit={this.handleSearch} />
-          <BooksPager
-            total={this.state.total}
-            onChangePage={this.handleChangePage}
-          />
-        </div>
-        <ShowBooks books={this.state.books} />
+        <Grid>
+          <Row className="middle">
+            <Col xs={12} md={12}>
+              <h1>Find a Book</h1>
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={10} xsOffset={1} md={10} mdOffset={1}>
+              <div id="pagination-search">
+                <Row>
+                  <Col xs={12} md={5}>
+                    <SearchForm onSubmit={this.handleSearch} />
+                  </Col>
+                  <Col xs={12} md={7}>
+                    <BooksPager
+                      total={this.state.total}
+                      onChangePage={this.handleChangePage}
+                    />
+                  </Col>
+                </Row>
+              </div>
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={12} md={12}>
+              <ShowBooks books={this.state.books} />
+            </Col>
+          </Row>
+        </Grid>
       </div>
     );
   }
