@@ -1,6 +1,7 @@
 "use strict";
 
 import * as React from "react";
+import { Button } from "react-bootstrap";
 
 class BookDetail extends React.Component {
   constructor(props) {
@@ -27,12 +28,13 @@ class BookDetail extends React.Component {
           </p>
           <p>ISBN {this.props.book.isbn}</p>
           <p>{this.props.book.pages} pages</p>
-          <button className="form-button" onClick={this.onAddBook}>
+          <Button className="form-button" onClick={this.onAddBook}>
             Add to Library
-          </button>
-          <button className="form-button" onClick={this.onCloseDetails}>
+          </Button>
+          <Button className="form-button" onClick={this.onCloseDetails}>
             Cancel
-          </button>
+          </Button>
+          <p> </p>
           <p>{this.props.book.description}</p>
         </div>
       );
