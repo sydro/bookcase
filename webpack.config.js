@@ -51,7 +51,7 @@ module.exports = {
             footer: process.env.FOOTER
           }
         : {
-            footer: "My Library"
+            footer: "Personal Library - Code: https://github.com/sydro/bookcase"
           }
     )
   }
