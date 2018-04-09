@@ -12,7 +12,7 @@ module.exports = {
     var promise = new Promise((resolve, reject) => {
       var urlParams = {
         q: searchString,
-        key: "6xTMWfTYxndlJBSWFlHGbg"
+        key: process.env.GOODREADS_KEY
       };
 
       var httpsOpts = {
@@ -53,7 +53,7 @@ module.exports = {
   getDetails: function(searchString) {
     var promise = new Promise((resolve, reject) => {
       var urlParams = {
-        key: "6xTMWfTYxndlJBSWFlHGbg"
+        key: process.env.GOODREADS_KEY
       };
 
       var httpsOpts = {

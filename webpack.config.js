@@ -44,6 +44,15 @@ module.exports = {
         : {
             title: "My Library"
           }
+    ),
+    Config2: JSON.stringify(
+      typeof process.env.FOOTER != "undefined"
+        ? {
+            footer: process.env.FOOTER
+          }
+        : {
+            footer: "My Library"
+          }
     )
   }
 };
