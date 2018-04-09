@@ -4,7 +4,6 @@ import * as React from "react";
 
 class Footer extends React.Component {
   render() {
-    console.log(Config);
     return (
       <footer className="footer">
         <div className="footer-container">

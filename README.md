@@ -4,7 +4,7 @@ Forked from [jmcilhargey/book-trader](https://github.com/jmcilhargey/book-trader
 
 ## Overview
 
-A textbook trading app that allows to search for books with the Google Books API/GoodReads API and add them to their collection. Users can browse, search, and sort the student library Users can edit their personal settings and mark books as available / unavailable. Authentication done with JWTs and a hash / salt based encryption strategy.
+A textbook trading app that allows to search for books with the Google Books API/Goodreads API and add them to their collection. Users can browse, search, and sort the student library Users can edit their personal settings and mark books as available / unavailable. Authentication done with JWTs and a hash / salt based encryption strategy.
 
 **NB**: You need a Google Books API and GoodReads API to set in .env file
 
@@ -26,6 +26,8 @@ To access the Google Books API, go to the Google Developer Console at https://co
 
 Search for the Google Books API and then click Enable. Under Credentials, copy the API key and save as GOOGLE_KEY environment variable.
 
+To access the Goodreads API, go to the Goodreads API page at https://www.goodreads.com/api/keys and save generated key in environment variable.
+
 Create a secret key for the JWT_SECRET environment variable. This can be done with Node from the command line using the crypto library:
 
     node -e "console.log(require('crypto').randomBytes(32).toString('hex'));"
@@ -44,7 +46,7 @@ Navigate to
 
 To run app with docker:
 
-* Create .env file with this variable:
+* Create .env file with these variables:
 
 ```
 GOOGLE_CLIENT_ID=...
