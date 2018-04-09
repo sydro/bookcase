@@ -22,16 +22,20 @@ class EditButtons extends React.Component {
     return (
       <div className="settings-control">
         <h2>My Settings & Books</h2>
-        { this.props.isEdit ?
-          <button className="save-button" onClick={ this.onSave }>Save Changes</button> :
+        {this.props.isEdit ? (
+          <button className="save-button" onClick={this.onSave}>
+            Save Changes
+          </button>
+        ) : (
           <div>
-            <button className="info-button" onClick={ this.onEditInfo }>Edit Info</button>
-            <button className="book-button" onClick={ this.onEditBooks }>Edit Books</button>
+            <button className="info-button" onClick={this.onEditInfo}>
+              Edit Info
+            </button>
           </div>
-        }
+        )}
       </div>
     );
   }
 }
 
-export default EditButtons
+export default EditButtons;

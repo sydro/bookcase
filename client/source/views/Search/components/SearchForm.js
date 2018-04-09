@@ -38,7 +38,7 @@ class SearchForm extends React.Component {
     }
     return (
       <Row>
-        <form>
+        <form onSubmit={this.handleSubmit}>
           <FormGroup
             controlId="formBasicText"
             //validationState={this.getValidationState()}
