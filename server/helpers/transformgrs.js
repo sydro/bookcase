@@ -9,7 +9,8 @@ module.exports = (data) => {
             //"description": book.volumeInfo.description || "Description unavailable",
             //"isbn": typeof book.volumeInfo.industryIdentifiers !== "undefined" ? book.volumeInfo.industryIdentifiers[0].identifier : "ISBN unavailable",
             //"pages": book.volumeInfo.pageCount || "Page count unavailable",
-            "image": typeof book.best_book.image_url !== "undefined" ? book.best_book.image_url : "Image unavailable"
+            "image": typeof book.best_book.image_url !== "undefined" ? book.best_book.image_url : "Image unavailable",
+            "grId": book.best_book.id
           }
     });
   } catch(err) {
@@ -21,7 +22,8 @@ module.exports = (data) => {
           //"description": book.volumeInfo.description || "Description unavailable",
           //"isbn": typeof book.volumeInfo.industryIdentifiers !== "undefined" ? book.volumeInfo.industryIdentifiers[0].identifier : "ISBN unavailable",
           //"pages": book.volumeInfo.pageCount || "Page count unavailable",
-          "image": typeof book.best_book.image_url !== "undefined" ? book.best_book.image_url : "Image unavailable"
+          "image": typeof book.best_book.image_url !== "undefined" ? book.best_book.image_url : "Image unavailable",
+          "grId": book.best_book.id
         } ]
     } else return []
   }

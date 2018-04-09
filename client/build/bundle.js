@@ -59389,7 +59389,13 @@
 
 	var React = _interopRequireWildcard(_react);
 
+	var _isomorphicFetch = __webpack_require__(568);
+
+	var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
+
 	var _reactBootstrap = __webpack_require__(572);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -59409,6 +59415,8 @@
 
 	    _this.onAddBook = _this.onAddBook.bind(_this);
 	    _this.onCloseDetails = _this.onCloseDetails.bind(_this);
+	    _this.fetchDetails = _this.fetchDetails.bind(_this);
+	    _this.state = { book: props.book };
 	    return _this;
 	  }
 
@@ -59423,9 +59431,41 @@
 	      this.props.onCloseDetails();
 	    }
 	  }, {
+	    key: "fetchDetails",
+	    value: function fetchDetails(valueId) {
+	      var _this2 = this;
+
+	      (0, _isomorphicFetch2.default)("/api/details/" + valueId, {
+	        method: "GET",
+	        headers: {
+	          Accept: "application/json",
+	          "Content-Type": "application/x-www-form-urlencoded"
+	        },
+	        credentials: "same-origin"
+	      }).then(function (response) {
+	        return response.json();
+	      }).then(function (json) {
+	        if (json.length != 0) {
+	          var book = _this2.state.book;
+	          book.isbn = json.isbn;
+	          book.description = json.description;
+	          book.authors = json.authors;
+	          book.pages = json.pages;
+	          delete book.grId;
+	          _this2.setState({ book: book });
+	          return;
+	        } else {
+	          return;
+	        }
+	      });
+	    }
+	  }, {
 	    key: "render",
 	    value: function render() {
-	      var book = this.props.book;
+	      var book = this.state.book;
+	      if (typeof book.grId != "undefined") {
+	        this.fetchDetails(book.grId._);
+	      }
 	      if (book) {
 	        return React.createElement(
 	          "div",
@@ -59436,7 +59476,7 @@
 	            React.createElement(
 	              "b",
 	              null,
-	              this.props.book.title
+	              book.title
 	            )
 	          ),
 	          React.createElement(
@@ -59445,19 +59485,19 @@
 	            React.createElement(
 	              "i",
 	              null,
-	              this.props.book.authors
+	              book.authors
 	            )
 	          ),
 	          React.createElement(
 	            "p",
 	            null,
 	            "ISBN ",
-	            this.props.book.isbn
+	            book.isbn
 	          ),
 	          React.createElement(
 	            "p",
 	            null,
-	            this.props.book.pages,
+	            book.pages,
 	            " pages"
 	          ),
 	          React.createElement(
@@ -59478,7 +59518,7 @@
 	          React.createElement(
 	            "p",
 	            null,
-	            this.props.book.description
+	            book.description
 	          )
 	        );
 	      } else {

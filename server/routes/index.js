@@ -5,6 +5,7 @@ const books = require("../apis/books");
 const booksgrs = require("../apis/books-grs");
 const transform = require("../helpers/transform");
 const transform2 = require("../helpers/transformgrs");
+const transform2details = require("../helpers/transformgrsdetails");
 const mid = require("../middleware");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
@@ -165,10 +166,25 @@ router.post("/search2", (req, res, next) => {
     .then(value => {
       let books = [];
       if (typeof value.results != "undefined") {
-        console.log(value);
         books = transform2(value);
       }
       res.status(200).send(books);
+    })
+    .catch(reason => {
+      return next(reason);
+    });
+});
+
+router.get("/details/:id", (req, res, next) => {
+  const id = req.params.id;
+  booksgrs
+    .getDetails(id)
+    .then(value => {
+      let book = [];
+      if (typeof value != "undefined") {
+        book = transform2details(value);
+      }
+      res.status(200).send(book);
     })
     .catch(reason => {
       return next(reason);
